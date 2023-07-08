@@ -31,7 +31,7 @@ public class PatrolPath
 [System.Serializable]
 public class PatrolAnimation
 {
-    public Animation animation;
+    public AnimationClip clip;
     //Duration that can exceed animation time, in which it will repeat the animation
     public float extendedDuration;
 }
