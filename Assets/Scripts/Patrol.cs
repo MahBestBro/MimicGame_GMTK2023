@@ -13,13 +13,14 @@ public class Patrol : MonoBehaviour
     
     [SerializeField] float defaultSpeed;
     [SerializeField] float chaseSpeed;
-    [SerializeField] float returnSpeed;
-    
-    [SerializeField] float waitTime;
 
+    [SerializeField] Collider2D chaseCollider;
+    
     Transform visionCone;
     MeshRenderer visionConeRenderer;
     Vector2 currentDirection;
+
+    Player player;
 
     int actionIndex = 0;
 
@@ -143,7 +144,7 @@ public class Patrol : MonoBehaviour
             {
                 startedAction = false;
 
-                elapsedTime += Time.fixedDeltaTime;
+                elapsedTime += Time.deltaTime;
                 if (elapsedTime > action.waitTime)
                 {
                     actionIndex++;
@@ -176,9 +177,23 @@ public class Patrol : MonoBehaviour
         }
     }
 
+    void OnGameLoss()
+    {
+        Debug.Log("gaem overr!");
+    }
+
     void ChasePlayer()
     {
-        Vector2 direction;
+        Vector3 direction = (player.transform.position - transform.position).normalized;
+        direction.z = 0f;
+        transform.position += chaseSpeed * direction * Time.deltaTime;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        //TODO: make use of player member instead
+        Player potentialPlayer = other.transform.GetComponent<Player>();
+        if (potentialPlayer != null) GlobalState.onGameLoss?.Invoke();
     }
 
     void OnDrawGizmosSelected()
@@ -227,10 +242,11 @@ public class Patrol : MonoBehaviour
                 RaycastHit2D hit = Physics2D.Linecast((Vector2)transform.position, rayEnd, rayMask);
                 if (hit.collider != null)
                 {
-                    Player player = hit.collider.transform.GetComponent<Player>();
-                    if (player != null)
+                    Player potentialPlayer = hit.collider.transform.GetComponent<Player>();
+                    if (potentialPlayer != null)
                     {
                         hitPlayer = true;
+                        player = potentialPlayer;
                         break;
                     }
                 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8270991871426996016}
   - component: {fileID: 9042839588641573212}
   - component: {fileID: 2021576156544410344}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisionCone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2845025064376196130}
   - component: {fileID: 5938026287903235521}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -178,7 +178,8 @@ GameObject:
   - component: {fileID: 5716844724543666570}
   - component: {fileID: 1178830908582189645}
   - component: {fileID: 137207419932099978}
-  m_Layer: 0
+  - component: {fileID: 7770042877735695768}
+  m_Layer: 6
   m_Name: Patrol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,10 +218,9 @@ MonoBehaviour:
   actions: []
   visionConeRadius: 8
   visionConeAngleDegrees: 30
-  defaultSpeed: 0.6
-  chaseSpeed: 0
-  returnSpeed: 0
-  waitTime: 1
+  defaultSpeed: 4
+  chaseSpeed: 10
+  chaseCollider: {fileID: 0}
 --- !u!95 &137207419932099978
 Animator:
   serializedVersion: 5
@@ -242,3 +242,38 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!58 &7770042877735695768
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4929481236971706442}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.5
