@@ -57,6 +57,8 @@ public class Player : MonoBehaviour
         //Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //mouseWorldPos.z = 0f;
 
+        Camera.main.transform.position = transform.position + Vector3.back * 10f; 
+
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (!mimicArea.enabled)
