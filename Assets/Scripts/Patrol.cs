@@ -10,15 +10,22 @@ public class Patrol : MonoBehaviour
     
     [SerializeField] float visionConeRadius = 8f;
     [SerializeField][Range(0, 360)] float visionConeAngleDegrees = 30f;
+    [SerializeField][Range(0, 1)] float visionConeAlpha = 0.5f;
     
+    [SerializeField] Vector2 startingDirection;
+
     [SerializeField] float defaultSpeed;
     [SerializeField] float chaseSpeed;
+
+    [SerializeField] float detectWaitTime;
 
     [SerializeField] Collider2D chaseCollider;
     
     Transform visionCone;
     MeshRenderer visionConeRenderer;
     Vector2 currentDirection;
+
+    GameObject exclamationMark;
 
     Player player;
 
@@ -37,37 +44,7 @@ public class Patrol : MonoBehaviour
     //action sequence before being distracted
     Vector2 prevPos;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Mesh visionConeMesh = new Mesh();
-        Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
-        int[] triangles = new int[3 * (vertices.Length - 2)];
-        vertices[0] = Vector3.zero;
-        for (int i = 1; i < vertices.Length; i++)
-        {
-            float t = 2f * i / (vertices.Length - 1) - 1f;
-            float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-            Vector3 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * Vector3.left;
-            vertices[i] = rayDir * visionConeRadius;
 
-            if (i < vertices.Length - 2)
-            {
-                triangles[3 * i    ] = 0;
-                triangles[3 * i + 1] = i;
-                triangles[3 * i + 2] = i + 1;
-            }
-        }
-        visionConeMesh.vertices = vertices;
-        visionConeMesh.triangles = triangles;
-
-        visionCone = transform.GetChild(0);
-        visionCone.GetComponent<MeshFilter>().mesh = visionConeMesh;
-        //animation = GetComponent<Animation>();
-
-        visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
-        visionConeRenderer.material.color = Color.red;
-    }
 
     bool V2ApproxEquals(Vector2 a, Vector2 b, float epsilon)
     {
@@ -177,17 +154,27 @@ public class Patrol : MonoBehaviour
         }
     }
 
-    void OnGameLoss()
+    Color ChangeAlpha(Color c, float a)
     {
-        Debug.Log("gaem overr!");
-    }
+        return new Color(c.r, c.g, c.b, a);
+    } 
 
     void ChasePlayer()
     {
-        Vector3 direction = (player.transform.position - transform.position).normalized;
-        direction.z = 0f;
-        transform.position += chaseSpeed * direction * Time.deltaTime;
+        if (elapsedTime < detectWaitTime) 
+        {
+            exclamationMark.SetActive(true);
+            elapsedTime += Time.deltaTime;
+        } 
+        else
+        {
+            exclamationMark.SetActive(false);
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            direction.z = 0f;
+            transform.position += chaseSpeed * direction * Time.deltaTime;
+        }
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -215,6 +202,43 @@ public class Patrol : MonoBehaviour
 //
         //    Gizmos.DrawLine((Vector2)transform.position, rayEnd);
         //}
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        currentDirection = startingDirection.normalized;
+
+        Mesh visionConeMesh = new Mesh();
+        Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
+        int[] triangles = new int[3 * (vertices.Length - 2)];
+        vertices[0] = Vector3.zero;
+        for (int i = 1; i < vertices.Length; i++)
+        {
+            float t = 2f * i / (vertices.Length - 1) - 1f;
+            float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
+            Vector3 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * Vector3.left;
+            vertices[i] = rayDir * visionConeRadius;
+
+            if (i < vertices.Length - 2)
+            {
+                triangles[3 * i    ] = 0;
+                triangles[3 * i + 1] = i;
+                triangles[3 * i + 2] = i + 1;
+            }
+        }
+        visionConeMesh.vertices = vertices;
+        visionConeMesh.triangles = triangles;
+
+        visionCone = transform.GetChild(0);
+        visionCone.GetComponent<MeshFilter>().mesh = visionConeMesh;
+        //animation = GetComponent<Animation>();
+
+        visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
+        visionConeRenderer.material.color = new Color(0f, 0f, 0f, visionConeAlpha);
+
+        exclamationMark = transform.Find("ExclamationMark").gameObject;
+        exclamationMark.SetActive(false);
     }
 
     void Update()
@@ -252,7 +276,7 @@ public class Patrol : MonoBehaviour
                 }
             }
 
-            visionConeRenderer.material.color = hitPlayer ? Color.red : Color.white;
+            visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.white, visionConeAlpha);
             if (hitPlayer) chasing = true;
         }
     }
