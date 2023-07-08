@@ -1,37 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(CircleCollider2D))]
-public class Item : MonoBehaviour
+public class Interactable : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
-    //Collider2D mimicTrigger;
-    
-    bool higlighted;
+    public UnityEvent onInteract;
+    public string message;
+
+
+    public void DisplayInteractPrompt()
+    {
+        Debug.Log(message);
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Player player = other.transform.GetComponent<Player>();
+        Player player = other.transform.parent.GetComponent<Player>();
         if (player != null)
         { 
-            player.mimicTargets.Add(this);
+            player.interactTargets.Add(this);
         }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        Player player = other.transform.GetComponent<Player>();
+        Player player = other.transform.parent.GetComponent<Player>();
         if (player != null)
         { 
-            player.mimicTargets.Remove(this);
+            player.interactTargets.Remove(this);
         }
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        
     }
 
     // Update is called once per frame

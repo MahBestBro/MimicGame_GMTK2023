@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(CircleCollider2D))]
 public class Player : MonoBehaviour
 {
-    public List<Item> mimicTargets;
+    [HideInInspector] public List<Mimicable> mimicTargets;
+    [HideInInspector] public List<Interactable> interactTargets;
 
     [SerializeField] float speed;
 
@@ -14,12 +14,17 @@ public class Player : MonoBehaviour
     SpriteRenderer spriteRenderer;
     Collider2D mimicArea;
 
+    public void Shart()
+    {
+        Debug.Log("pfft");
+    }
+
     // Start is called before the first frame update
     void Start()
     {   
         rigidBody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        mimicArea = GetComponent<CircleCollider2D>();
+        mimicArea = transform.GetChild(0).GetComponent<CircleCollider2D>();
 
         mimicArea.enabled = false;
     }
@@ -42,8 +47,8 @@ public class Player : MonoBehaviour
                 {
                     Vector3 toMouse = Vector3.Normalize(mouseWorldPos - transform.position);
 
-                    Item nearest = mimicTargets[0]; 
-                    foreach (Item target in mimicTargets)
+                    Mimicable nearest = mimicTargets[0]; 
+                    foreach (Mimicable target in mimicTargets)
                     {
                         Vector3 toNearest = Vector3.Normalize(nearest.transform.position - transform.position); 
                         Vector3 toTarget = Vector3.Normalize(target.transform.position - transform.position); 
@@ -63,6 +68,21 @@ public class Player : MonoBehaviour
                 mimicArea.enabled = false;
                 mimicTargets.Clear();
             }
+        }
+
+        if (interactTargets.Count > 0)
+        {
+            Interactable nearest = interactTargets[0];
+            foreach (Interactable target in interactTargets)
+            {
+                float nearestSqDist = (nearest.transform.position - transform.position).sqrMagnitude; 
+                float targetSqDist = (target.transform.position - transform.position).sqrMagnitude; 
+                if (targetSqDist < nearestSqDist) nearest = target;
+            }
+
+            nearest.DisplayInteractPrompt();
+
+            if (Input.GetKeyDown(KeyCode.Space)) nearest.onInteract.Invoke();
         }
     }
 
