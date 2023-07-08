@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Patrol : MonoBehaviour
 {
+    const int visionConeResolution = 128;
+
     [SerializeField] List<PatrolAction> actions;
     
     [SerializeField] float visionConeRadius = 8f;
@@ -15,12 +17,13 @@ public class Patrol : MonoBehaviour
     
     [SerializeField] float waitTime;
 
-    //Vector2 faceDir
-
     Transform visionCone;
     MeshRenderer visionConeRenderer;
+    Vector2 currentDirection;
 
     int actionIndex = 0;
+
+    bool chasing = false;
 
     //All of these members are the "action state"
     //Animation animation;
@@ -29,11 +32,15 @@ public class Patrol : MonoBehaviour
     float elapsedTime = 0f;
     bool startedAction = true;
 
+    //All of these members are the "action record", they represent where the patrol was in its
+    //action sequence before being distracted
+    Vector2 prevPos;
+
     // Start is called before the first frame update
     void Start()
     {
         Mesh visionConeMesh = new Mesh();
-        Vector3[] vertices = new Vector3[128 + 1]; //+1 for point of origin
+        Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
         int[] triangles = new int[3 * (vertices.Length - 2)];
         vertices[0] = Vector3.zero;
         for (int i = 1; i < vertices.Length; i++)
@@ -91,9 +98,10 @@ public class Patrol : MonoBehaviour
             }
 
             Vector2 destination = path.points[pathIndex];
-            Vector2 direction = destination - path.points[pathIndex - 1];
+            Vector2 direction = (destination - path.points[pathIndex - 1]).normalized;
+            currentDirection = direction;
 
-            transform.position += (Vector3)direction * defaultSpeed * Time.fixedDeltaTime;
+            transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
 
             //if ((Vector2)transform.position == destination)
             if (V2ApproxEquals((Vector2)transform.position, destination, 0.05f))
@@ -104,7 +112,7 @@ public class Patrol : MonoBehaviour
                 pathIndex++;
                 if (pathIndex == path.points.Length) return;
 
-                Vector2 newDirection = path.points[pathIndex] - path.points[pathIndex - 1];
+                Vector2 newDirection = (path.points[pathIndex] - path.points[pathIndex - 1]).normalized;
                 float rotationAngle = Vector2.SignedAngle(direction, newDirection);
                 visionCone.rotation *= Quaternion.AngleAxis(rotationAngle, Vector3.forward);
             }
@@ -168,6 +176,11 @@ public class Patrol : MonoBehaviour
         }
     }
 
+    void ChasePlayer()
+    {
+        Vector2 direction;
+    }
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -177,13 +190,55 @@ public class Patrol : MonoBehaviour
             
             foreach(Vector2 point in action.path.points) Gizmos.DrawSphere((Vector3)point, 0.1f);
         }
+
+        //for (int i = 0; i < visionConeResolution; i++)
+        //{
+        //    float t = 2f * i / visionConeResolution - 1f;
+        //    float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
+        //    Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
+        //    Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
+//
+        //    Gizmos.DrawLine((Vector2)transform.position, rayEnd);
+        //}
     }
 
+    void Update()
+    {
+        if (!chasing) HandleAction();
+        else ChasePlayer();
+    }
 
     void FixedUpdate()
     {
         //TODO: Move this out of fixed update cause not all of it is needed here
-        HandleAction();
+        
+        if (!chasing)
+        {
+            bool hitPlayer = false;
+            for (int i = 0; i < visionConeResolution; i++)
+            {
+                float t = 2f * i / visionConeResolution - 1f;
+                float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
+                Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
+                Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
+
+                LayerMask rayMask = ~0;
+                rayMask &= ~LayerMask.GetMask("Mimicable", "Interactable", "NonPhysicsColliders");
+                RaycastHit2D hit = Physics2D.Linecast((Vector2)transform.position, rayEnd, rayMask);
+                if (hit.collider != null)
+                {
+                    Player player = hit.collider.transform.GetComponent<Player>();
+                    if (player != null)
+                    {
+                        hitPlayer = true;
+                        break;
+                    }
+                }
+            }
+
+            visionConeRenderer.material.color = hitPlayer ? Color.red : Color.white;
+            if (hitPlayer) chasing = true;
+        }
     }
 
 }

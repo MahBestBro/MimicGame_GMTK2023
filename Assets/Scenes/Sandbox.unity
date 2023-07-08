@@ -1328,6 +1328,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
+      propertyPath: defaultSpeed
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
+      propertyPath: visionConeRadius
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.size
       value: 3
       objectReference: {fileID: 0}
