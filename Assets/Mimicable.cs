@@ -6,6 +6,7 @@ using UnityEngine;
 public class Mimicable : MonoBehaviour
 {
     SpriteRenderer spriteRenderer;
+    Material defaultMaterial;
     
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -22,6 +23,7 @@ public class Mimicable : MonoBehaviour
         if (player != null)
         { 
             player.mimicTargets.Remove(this);
+            spriteRenderer.material = defaultMaterial;
         }
     }
 
@@ -29,6 +31,7 @@ public class Mimicable : MonoBehaviour
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        defaultMaterial = spriteRenderer.material;
     }
 
     // Update is called once per frame
