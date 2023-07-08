@@ -72,7 +72,7 @@ public class Player : MonoBehaviour
 
                 mimicArea.enabled = false;
                 mimicTargets.Clear();
-                ((Mimicable)previousMimicable).GetComponent<SpriteRenderer>().material = originalMimicMaterial;
+                if (previousMimicable is Mimicable) previousMimicable.GetComponent<SpriteRenderer>().material = originalMimicMaterial;
                 previousMimicable = null;
             }
         }
