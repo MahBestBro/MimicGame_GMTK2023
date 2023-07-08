@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     [SerializeField] float speed;
 
     Rigidbody2D rigidBody;
-    SpriteRenderer spriteRenderer;
-    Collider2D mimicArea;
+    [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Collider2D mimicArea;
 
     Material originalMimicMaterial;
     Mimicable? previousMimicable = null;
@@ -27,9 +27,6 @@ public class Player : MonoBehaviour
     void Start()
     {   
         rigidBody = GetComponent<Rigidbody2D>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        mimicArea = transform.GetChild(0).GetComponent<CircleCollider2D>();
-
         mimicArea.enabled = false;
     }
 
