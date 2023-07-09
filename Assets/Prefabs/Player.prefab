@@ -228,6 +228,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6309279291996294586}
   - component: {fileID: 4435750962796724748}
+  - component: {fileID: 2477650320757923958}
   - component: {fileID: 6273881756595153466}
   - component: {fileID: 7845203052437659926}
   m_Layer: 0
@@ -267,11 +268,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3938b8cc223192c49bf8d63048558465, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mimicTargets: []
   interactTargets: []
-  mimicSelectMaterial: {fileID: -876546973899608171, guid: bd4b37ccb0f28da43a272ac1c304c539, type: 3}
   speed: 6
+--- !u!114 &2477650320757923958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248776978457727513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf4717ce36a438743a27ab9e0f7d1ca2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1364853798257101243}
+  mimicTargets: []
+  mimicSelectMaterial: {fileID: -876546973899608171, guid: bd4b37ccb0f28da43a272ac1c304c539, type: 3}
   mimicArea: {fileID: 5923816921959642220}
 --- !u!58 &6273881756595153466
 CircleCollider2D:

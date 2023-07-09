@@ -13835,6 +13835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047d55ef35efe6547ad68bc18d594fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!58 &451836612
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -46779,6 +46780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047d55ef35efe6547ad68bc18d594fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!58 &1588810013
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -48712,6 +48714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047d55ef35efe6547ad68bc18d594fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!58 &1692140714
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -51915,6 +51918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047d55ef35efe6547ad68bc18d594fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!58 &1786967387
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -60166,6 +60170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 047d55ef35efe6547ad68bc18d594fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
 --- !u!58 &2071061573
 CircleCollider2D:
   m_ObjectHideFlags: 0

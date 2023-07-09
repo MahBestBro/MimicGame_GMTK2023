@@ -2,41 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct MimicableData
+{
+    public SpriteRenderer spriteRenderer;
+    // public Transform transform;
+    public MimicableData(SpriteRenderer _spriteRenderer)
+    {
+        spriteRenderer = _spriteRenderer;
+    }
+}
+
 [RequireComponent(typeof(CircleCollider2D))]
 public class Mimicable : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
+    [SerializeField] SpriteRenderer spriteRenderer;
     Material defaultMaterial;
-    
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        Player player = other.transform.parent.GetComponent<Player>();
-        if (player != null)
-        { 
-            player.mimicTargets.Add(this);
-        }
-    }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        Player player = other.transform.parent.GetComponent<Player>();
-        if (player != null)
-        { 
-            player.mimicTargets.Remove(this);
-            spriteRenderer.material = defaultMaterial;
-        }
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultMaterial = spriteRenderer.material;
     }
 
-    // Update is called once per frame
-    void Update()
+    public MimicableData GetMimicableData()
     {
-        
+        return new MimicableData(spriteRenderer);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Mimicer mimicer = other.transform.parent.GetComponent<Mimicer>();
+        if (mimicer != null)
+        {
+            mimicer.AddMimicTarget(this);
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        Mimicer mimicer = other.transform.parent.GetComponent<Mimicer>();
+        if (mimicer != null)
+        {
+            mimicer.RemoveMimicTarget(this);
+            spriteRenderer.material = defaultMaterial;
+        }
     }
 }
