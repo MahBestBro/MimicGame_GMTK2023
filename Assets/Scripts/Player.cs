@@ -26,7 +26,10 @@ public class Player : MonoBehaviour
         mimicry = GetComponent<Mimicer>();
     }
 
-
+    public Mimicer GetMimicComponent()
+    {
+        return mimicry;
+    }
 
     void Update()
     {
@@ -62,4 +65,6 @@ public class Player : MonoBehaviour
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         rigidBody.MovePosition(rigidBody.position + direction * speed * Time.fixedDeltaTime);
     }
+
+
 }

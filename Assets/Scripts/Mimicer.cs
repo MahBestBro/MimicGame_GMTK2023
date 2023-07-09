@@ -88,7 +88,9 @@ public class Mimicer : MonoBehaviour
     {
         MimicableData mimicableData = mimicable.GetMimicableData();
         spriteRenderer.sprite = mimicableData.spriteRenderer.sprite;
-        spriteRenderer.transform.localScale = mimicableData.spriteRenderer.transform.lossyScale;
+        Vector3 mimicableScale = mimicableData.spriteRenderer.transform.lossyScale;
+        spriteRenderer.transform.localScale = mimicableScale;
+        spriteRenderer.transform.localPosition += new Vector3(0, -spriteRenderer.transform.localPosition.y + (0.5f - mimicableScale.y));
     }
 
     public void AddMimicTarget(Mimicable mimicable)
@@ -99,6 +101,11 @@ public class Mimicer : MonoBehaviour
     public void RemoveMimicTarget(Mimicable mimicable)
     {
         if(mimicTargets.Count>0) mimicTargets.Remove(mimicable);
+    }
+
+    public bool isDisguisedAs(Sprite sprite)
+    {
+        return spriteRenderer.sprite == sprite;
     }
 
     void Update()

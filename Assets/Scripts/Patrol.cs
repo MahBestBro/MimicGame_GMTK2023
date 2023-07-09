@@ -336,7 +336,7 @@ public class Patrol : MonoBehaviour
         shouldChase = prevPlayerPos != (Vector2)player.transform.position;
         if (shouldChase) return;
 
-        shouldInspect = !inspecting && Array.Exists(itemsOfInterest, x => x == player.spriteRenderer.sprite);
+        shouldInspect = !inspecting && Array.Exists(itemsOfInterest, x => player.GetMimicComponent().isDisguisedAs(x));
     }
 
     void LateUpdate()
