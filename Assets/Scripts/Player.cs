@@ -33,16 +33,16 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        //mouseWorldPos.z = 0f;
-
+        // Camera Follow
         Camera.main.transform.position = transform.position + Vector3.back * 10f;
 
+        // Mimicing
         if (Input.GetKeyDown(KeyCode.E))
         {
             mimicry.TriggerMimic();
         }
 
+        // Interacting
         if (interactTargets.Count > 0)
         {
             Interactable nearest = interactTargets[0];
@@ -62,8 +62,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // Movement
         Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        rigidBody.MovePosition(rigidBody.position + direction * speed * Time.fixedDeltaTime);
+        rigidBody.MovePosition(rigidBody.position + direction.normalized * speed * Time.fixedDeltaTime);
     }
 
 

@@ -90,7 +90,7 @@ public class Mimicer : MonoBehaviour
         spriteRenderer.sprite = mimicableData.spriteRenderer.sprite;
         Vector3 mimicableScale = mimicableData.spriteRenderer.transform.lossyScale;
         spriteRenderer.transform.localScale = mimicableScale;
-        spriteRenderer.transform.localPosition += new Vector3(0, -spriteRenderer.transform.localPosition.y + (0.5f - mimicableScale.y));
+        spriteRenderer.transform.localPosition += new Vector3(0, -spriteRenderer.transform.localPosition.y + (mimicableData.spriteRenderer.sprite.pivot.y - mimicableScale.y));
     }
 
     public void AddMimicTarget(Mimicable mimicable)
