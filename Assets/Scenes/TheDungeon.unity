@@ -61372,7 +61372,7 @@ MonoBehaviour:
   itemsOfInterest: []
   visionConeRadius: 8
   visionConeAngleDegrees: 30
-  visionConeAlpha: 0.5
+  visionConeAlpha: 0.1
   startingDirection: {x: 0, y: 1}
   defaultSpeed: 4
   chaseSpeed: 10
