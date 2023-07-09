@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class GlobalState : MonoBehaviour
 {
+    const int menuSceneIndex = 0;
+    const int levelSceneIndex = 1;
+
     public static Action onGameLoss;
     public static Action<float> addToScore;
     public static Action showEndScreen;
@@ -21,6 +24,7 @@ public class GlobalState : MonoBehaviour
     //NOTE: Needs to be set in menu scene
     [SerializeField] GameObject howToPlayScreen;
     [SerializeField] GameObject mainMenu;
+    [SerializeField] GameObject highlightDemo;
     [SerializeField] Text title;
 
     [SerializeField] float transitionTime;
@@ -38,12 +42,30 @@ public class GlobalState : MonoBehaviour
         addToScore -= AddToScore;
         onGameLoss -= FadeOutAndLoadLevel;
         showEndScreen -= ShowEndScreen;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(levelSceneIndex);
         
-        Image image = transitionPanel.GetComponent<Image>();
-        Color newColour = image.color;
-        newColour.a = 1f;
-        image.color = newColour;
+        //Image image = transitionPanel.GetComponent<Image>();
+        //Color newColour = image.color;
+        //newColour.a = 1f;
+        //image.color = newColour;
+    }
+
+    void ResetMenu()
+    {
+        addToScore -= AddToScore;
+        onGameLoss -= FadeOutAndLoadLevel;
+        showEndScreen -= ShowEndScreen;
+        SceneManager.LoadScene(menuSceneIndex);
+        
+        //Image image = transitionPanel.GetComponent<Image>();
+        //Color newColour = image.color;
+        //newColour.a = 1f;
+        //image.color = newColour;
+    }
+
+    public void FadeOutAndLoadMenu()
+    {
+        StartCoroutine(Transition(ResetMenu, false));
     }
 
     public void FadeOutAndLoadLevel()
@@ -56,12 +78,14 @@ public class GlobalState : MonoBehaviour
         title.text = "How to Play";
         mainMenu.SetActive(false);
         howToPlayScreen.SetActive(true);
+        highlightDemo.SetActive(true);
     }
 
     public void ShowMainMenu()
     {
         title.text = "Mimic's Dungeon";
         howToPlayScreen.SetActive(false);
+        highlightDemo.SetActive(false);
         mainMenu.SetActive(true);
     }
 
