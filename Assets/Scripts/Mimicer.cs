@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,18 +7,18 @@ using UnityEngine.Assertions;
 public class Mimicer : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] Shader spriteShaderValidator;
 
     public List<Mimicable> mimicTargets;
-    [SerializeField] Material mimicSelectMaterial;
     [SerializeField] Collider2D mimicArea;
 
-    Material originalMimicMaterial;
     Mimicable? previousMimicable = null;
 
 
     void Start()
     {
         Assert.IsNotNull(spriteRenderer);
+        Assert.IsNotNull(spriteShaderValidator);
         mimicArea.enabled = false;
     }
 
@@ -60,8 +61,8 @@ public class Mimicer : MonoBehaviour
             // disable mimic area & clear mimic targets
             mimicArea.enabled = false;
             mimicTargets.Clear();
-            // If previous mimicable was highlighted, untrack and reset its material
-            if (previousMimicable is Mimicable) previousMimicable.GetComponent<SpriteRenderer>().material = originalMimicMaterial;
+            // If previous mimicable was highlighted, untrack and unhighlight
+            if (previousMimicable is Mimicable) SetHighlightOnSprite(previousMimicable.GetComponent<SpriteRenderer>(), false);
             previousMimicable = null;
         }
     }
@@ -70,18 +71,32 @@ public class Mimicer : MonoBehaviour
     {
         if (GetNearestMimicable() is Mimicable nearestMimicable)
         {
-            // Reset material of previous last tracked mimicable
+            // Unhighlight previous last tracked mimicable
             if (previousMimicable is Mimicable prevMimicable)
             {
-                prevMimicable.GetComponent<SpriteRenderer>().material = originalMimicMaterial;
+                SetHighlightOnSprite(previousMimicable.GetComponent<SpriteRenderer>(), false);
             }
             // Update tracked previousMimicable
             previousMimicable = nearestMimicable;
             // Update material to highlight
             SpriteRenderer nearestSR = nearestMimicable.GetComponent<SpriteRenderer>();
-            originalMimicMaterial = nearestSR.material;
-            nearestSR.material = mimicSelectMaterial;
+            SetHighlightOnSprite(nearestSR, true);
         }
+    }
+
+    void SetHighlightOnSprite(SpriteRenderer target, bool highlightEnabled)
+    {
+        if (target.material.shader != spriteShaderValidator) Debug.LogError("Tried to Highlight Sprite without valid material");
+
+        const string HIGHLIGHT_KEYWORD = "_HIGHLIGHTENABLED";
+        if (highlightEnabled)
+        {
+            target.material.EnableKeyword(HIGHLIGHT_KEYWORD);
+        }else
+        {
+            target.material.DisableKeyword(HIGHLIGHT_KEYWORD);
+        }
+        
     }
 
     void TransformIntoMimicable(Mimicable mimicable)
