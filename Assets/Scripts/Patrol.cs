@@ -26,7 +26,7 @@ public class Patrol : MonoBehaviour
     
     Transform visionCone;
     MeshRenderer visionConeRenderer;
-    Vector2 currentDirection; //NOTE: This is mostly only meant to be written over in Update 
+    Vector2 visionConeDirection; //NOTE: This is mostly only meant to be written over in Update 
 
     GameObject suspicionIndicator;
 
@@ -36,6 +36,7 @@ public class Patrol : MonoBehaviour
     int actionIndex = 0;
 
     IEnumerator coroutine;
+    bool currentlyInCoroutine = false;
     enum PatrolState
     {
         PerformingScriptedActions,
@@ -75,15 +76,14 @@ public class Patrol : MonoBehaviour
 
     bool V2ApproxEquals(Vector2 a, Vector2 b, float epsilon)
     {
-        return b.x <= a.x + epsilon && b.x >= a.x - epsilon &&
-               b.y <= a.y + epsilon && b.y >= a.y - epsilon;
+        return Vector2.Distance(a, b) <= epsilon;
     }
 
     void SetVisionConeDirection(Vector2 direction)
     {
-        float rotationAngle = Vector2.SignedAngle(currentDirection, direction.normalized);
+        float rotationAngle = Vector2.SignedAngle(visionConeDirection, direction.normalized);
         visionCone.rotation *= Quaternion.AngleAxis(rotationAngle, Vector3.forward);
-        currentDirection = direction;
+        visionConeDirection = direction;
     }
 
     void ResetActionContext()
@@ -119,12 +119,7 @@ public class Patrol : MonoBehaviour
             if (V2ApproxEquals((Vector2)transform.position, destination, 0.05f))
             {
                 transform.position = path.points[pathIndex];
-
-                //Vector2 prevDirection = destination - path.points[pathIndex - 1];
                 pathIndex++;
-                //if (pathIndex == path.points.Length) return;
-
-                //SetVisionConeDirection((path.points[pathIndex] - path.points[pathIndex - 1]).normalized);
             }
         }
         else if (repeatCount < path.repeats)
@@ -267,6 +262,7 @@ public class Patrol : MonoBehaviour
 
     IEnumerator ShowSuspicion(string suspicionPrompt)
     {
+        SetVisionConeDirection((Vector2)(player.transform.position - transform.position));
         suspicionIndicator.GetComponent<TextMesh>().text = suspicionPrompt;
         suspicionIndicator.SetActive(true);
         yield return new WaitForSeconds(detectWaitTime);
@@ -280,27 +276,31 @@ public class Patrol : MonoBehaviour
             Vector3 direction = (player.transform.position - transform.position).normalized;
             direction.z = 0f;
             transform.position += speed * direction * Time.deltaTime;
+            SetVisionConeDirection((Vector2)direction);
             yield return null;
         }
     }
 
     IEnumerator Chase()
     {
+        currentlyInCoroutine = true;
+
         yield return StartCoroutine(ShowSuspicion("!"));
         yield return FollowPlayer(chaseSpeed, () => endFollow);  
         
+        currentlyInCoroutine = false;
         endFollow = false; 
     }
 
     IEnumerator Inspect()
     {
+        currentlyInCoroutine = true;
+
         yield return StartCoroutine(ShowSuspicion("?"));
         yield return FollowPlayer(defaultSpeed, () => endFollow);
-        yield return new WaitForSeconds(inspectionTime); //TODO: Replace dummy code
-        
-        state = PatrolState.ReturnToScriptedAction;
-        SetVisionConeDirection(prevPos - (Vector2)transform.position);
-        endFollow = false;
+         
+        player.Crumch();
+        Destroy(gameObject);
     }
 
     bool endFollow = false;
@@ -329,7 +329,7 @@ public class Patrol : MonoBehaviour
         //{
         //    float t = 2f * i / visionConeResolution - 1f;
         //    float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-        //    Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
+        //    Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * visionConeDirection;
         //    Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
 //
         //    Gizmos.DrawLine((Vector2)transform.position, rayEnd);
@@ -339,7 +339,7 @@ public class Patrol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        currentDirection = startingDirection.normalized;
+        visionConeDirection = startingDirection.normalized;
 
         Mesh visionConeMesh = new Mesh();
         Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
@@ -379,6 +379,7 @@ public class Patrol : MonoBehaviour
         else if (state == PatrolState.ReturnToScriptedAction) ReturnToAction();
     }
 
+    bool firstHit = true;
     void FixedUpdate()
     {
         if (Chasing()) return;
@@ -390,7 +391,7 @@ public class Patrol : MonoBehaviour
         {
             float t = 2f * i / visionConeResolution - 1f;
             float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-            Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
+            Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * visionConeDirection;
             Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
 
             LayerMask rayMask = ~0;
@@ -403,14 +404,22 @@ public class Patrol : MonoBehaviour
                 {
                     hitPlayer = true;
                     player = potentialPlayer;
-                    prevPlayerPos = (Vector2)player.transform.position;
+                    if (firstHit) 
+                    {
+                        prevPlayerPos = (Vector2)player.transform.position;
+                        firstHit = false;
+                    }
                     break;
                 }
             }
         }
 
         visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.white, visionConeAlpha);
-        if (!hitPlayer) return; 
+        if (!hitPlayer) 
+        {
+            firstHit = true;
+            return;
+        }
         
         checkForChase:
         if (prevPlayerPos != (Vector2)player.transform.position) 
@@ -427,7 +436,7 @@ public class Patrol : MonoBehaviour
     {
         if (state == PatrolState.AboutToChase) 
         {
-            StopCoroutine(coroutine);
+            if (currentlyInCoroutine) StopCoroutine(coroutine);
             state = PatrolState.Chasing;
             coroutine = Chase();
             StartCoroutine(coroutine);
