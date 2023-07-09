@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rigidBody;
 
+    AudioSource audioSource; 
+
     Mimicer mimicry;
 
     public void Shart()
@@ -19,9 +21,15 @@ public class Player : MonoBehaviour
         Debug.Log("pfft");
     }
 
+    public void Crumch()
+    {
+        audioSource.Play();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         rigidBody = GetComponent<Rigidbody2D>();
         mimicry = GetComponent<Mimicer>();
     }
