@@ -74,12 +74,12 @@ public class Mimicer : MonoBehaviour
             // Unhighlight previous last tracked mimicable
             if (previousMimicable is Mimicable prevMimicable)
             {
-                SetHighlightOnSprite(previousMimicable.GetComponent<SpriteRenderer>(), false);
+                SetHighlightOnSprite(previousMimicable.GetMimicableData().spriteRenderer, false);
             }
             // Update tracked previousMimicable
             previousMimicable = nearestMimicable;
             // Update material to highlight
-            SpriteRenderer nearestSR = nearestMimicable.GetComponent<SpriteRenderer>();
+            SpriteRenderer nearestSR = nearestMimicable.GetMimicableData().spriteRenderer;
             SetHighlightOnSprite(nearestSR, true);
         }
     }
