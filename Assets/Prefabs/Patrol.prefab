@@ -229,6 +229,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ec3eeb3cc095b42ae4d34fb7bcdc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onExitDungeon:
+    m_PersistentCalls:
+      m_Calls: []
   actions: []
   itemsOfInterest: []
   visionConeRadius: 8

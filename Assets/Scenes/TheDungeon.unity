@@ -54999,6 +54999,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ec3eeb3cc095b42ae4d34fb7bcdc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onExitDungeon:
+    m_PersistentCalls:
+      m_Calls: []
   actions:
   - kind: 0
     path:
@@ -79904,6 +79907,10 @@ PrefabInstance:
       value: -8.5
       objectReference: {fileID: 0}
     - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: actions.Array.data[10].path.points.Array.data[10].x
       value: 0.5
       objectReference: {fileID: 0}
@@ -79975,6 +79982,30 @@ PrefabInstance:
       propertyPath: actions.Array.data[19].animation.alternativeAnimator
       value: 
       objectReference: {fileID: 1378336831}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1339950186}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: FadeOutAndLoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GlobalState, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
+      propertyPath: onExitDungeon.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4890214723679689034, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: helmet
       value: 
