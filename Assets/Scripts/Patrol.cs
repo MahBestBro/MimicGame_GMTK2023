@@ -13,6 +13,7 @@ public class ItemOfInterest
 public class Patrol : MonoBehaviour
 {
     const int visionConeResolution = 128;
+    readonly Color inspectColor = new Color(48, 41, 36) / 255f; 
 
     [SerializeField] List<PatrolAction> actions;
     [SerializeField] ItemOfInterest[] itemsOfInterest;
@@ -238,10 +239,11 @@ public class Patrol : MonoBehaviour
         }
     }
 
-    IEnumerator ShowSuspicion(string suspicionPrompt)
+    IEnumerator ShowSuspicion(string prompt, Color color)
     {
         SetVisionConeDirection((Vector2)(player.transform.position - transform.position));
-        suspicionIndicator.GetComponent<TextMesh>().text = suspicionPrompt;
+        suspicionIndicator.GetComponent<TextMesh>().text = prompt;
+        suspicionIndicator.GetComponent<TextMesh>().color = color;
         suspicionIndicator.SetActive(true);
         yield return new WaitForSeconds(detectWaitTime);
         suspicionIndicator.SetActive(false);
@@ -263,7 +265,7 @@ public class Patrol : MonoBehaviour
     {
         currentlyInCoroutine = true;
 
-        yield return StartCoroutine(ShowSuspicion("!"));
+        yield return StartCoroutine(ShowSuspicion("!", Color.red));
         yield return FollowPlayer(chaseSpeed, () => endFollow);  
         
         currentlyInCoroutine = false;
@@ -274,7 +276,7 @@ public class Patrol : MonoBehaviour
     {
         currentlyInCoroutine = true;
 
-        yield return StartCoroutine(ShowSuspicion("?"));
+        yield return StartCoroutine(ShowSuspicion("?", inspectColor));
         yield return FollowPlayer(defaultSpeed, () => endFollow);
          
         player.Crumch();
