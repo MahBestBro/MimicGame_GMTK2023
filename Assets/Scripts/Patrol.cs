@@ -22,8 +22,6 @@ public class Patrol : MonoBehaviour
     [SerializeField] float detectWaitTime;
     [SerializeField] float inspectionTime;
 
-    [SerializeField] Collider2D chaseCollider;
-    
     Transform visionCone;
     MeshRenderer visionConeRenderer;
     Vector2 visionConeDirection; //NOTE: This is mostly only meant to be written over in Update 
@@ -339,8 +337,6 @@ public class Patrol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        visionConeDirection = startingDirection.normalized;
-
         Mesh visionConeMesh = new Mesh();
         Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
         int[] triangles = new int[3 * (vertices.Length - 2)];
@@ -368,6 +364,9 @@ public class Patrol : MonoBehaviour
 
         visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
         visionConeRenderer.material.color = new Color(0f, 0f, 0f, visionConeAlpha);
+
+        //visionCone.rotation = Quaternion.identity;
+        SetVisionConeDirection(startingDirection);
 
         suspicionIndicator = transform.Find("SuspicionIndicator").gameObject;
         suspicionIndicator.SetActive(false);
