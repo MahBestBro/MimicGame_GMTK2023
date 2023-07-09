@@ -21,10 +21,11 @@ public class GlobalState : MonoBehaviour
 
     public void QuitGame()
     {
+        Debug.Log("poop");
         Application.Quit();
     }
 
-    void ResetLevel()
+    public void ResetLevel()
     {
         addToScore -= AddToScore;
         onGameLoss -= OnGameLoss;
