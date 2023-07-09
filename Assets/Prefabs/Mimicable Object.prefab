@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 1606316854551540739}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &8217039412861431698
 CircleCollider2D:
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 1606316854551540739}
   - component: {fileID: 2147950669755294456}
   m_Layer: 0
-  m_Name: Barrel
+  m_Name: Object Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155,7 +155,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 8e1f8a7f2a0e66d47896e4e918e6a921, type: 3}
+  m_Sprite: {fileID: 21300000, guid: da90c25ddeabce74d97cb360e8f5bf3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
