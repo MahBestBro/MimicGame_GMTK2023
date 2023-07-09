@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,7 @@ public class Patrol : MonoBehaviour
     const int visionConeResolution = 128;
 
     [SerializeField] List<PatrolAction> actions;
+    [SerializeField] Sprite[] itemsOfInterest;
     
     [SerializeField] float visionConeRadius = 8f;
     [SerializeField][Range(0, 360)] float visionConeAngleDegrees = 30f;
@@ -25,13 +27,18 @@ public class Patrol : MonoBehaviour
     MeshRenderer visionConeRenderer;
     Vector2 currentDirection;
 
-    GameObject exclamationMark;
+    GameObject suspicionIndicator;
 
+    Vector2 prevPlayerPos;
     Player player;
 
     int actionIndex = 0;
 
+    IEnumerator coroutine;
+    bool shouldChase = false;
     bool chasing = false;
+    bool shouldInspect = false;
+    bool inspecting = false;
 
     //All of these members are the "action state"
     //Animation animation;
@@ -163,16 +170,60 @@ public class Patrol : MonoBehaviour
     {
         if (elapsedTime < detectWaitTime) 
         {
-            exclamationMark.SetActive(true);
+            suspicionIndicator.SetActive(true);
             elapsedTime += Time.deltaTime;
         } 
         else
         {
-            exclamationMark.SetActive(false);
+            suspicionIndicator.SetActive(false);
             Vector3 direction = (player.transform.position - transform.position).normalized;
             direction.z = 0f;
             transform.position += chaseSpeed * direction * Time.deltaTime;
+
+            elapsedTime = 0f;
         }
+    }
+
+    IEnumerator ShowSuspicion(string suspicionPrompt)
+    {
+        suspicionIndicator.GetComponent<TextMesh>().text = suspicionPrompt;
+        suspicionIndicator.SetActive(true);
+        yield return new WaitForSeconds(detectWaitTime);
+
+        suspicionIndicator.SetActive(false);
+    }
+
+    float prevDt = 0f;
+    IEnumerator FollowPlayer(float speed, Func<bool> shouldStop)
+    {
+        while (!shouldStop())
+        {
+            Vector3 direction = (player.transform.position - transform.position).normalized;
+            direction.z = 0f;
+            transform.position += speed * direction * Time.deltaTime;
+            prevDt = Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    IEnumerator Chase()
+    {
+        chasing = true;
+
+        yield return StartCoroutine(ShowSuspicion("!"));
+        yield return FollowPlayer(chaseSpeed, () => false);
+        
+        chasing = false;
+    }
+
+    IEnumerator Inspect()
+    {
+        inspecting = true;
+
+        yield return StartCoroutine(ShowSuspicion("?"));
+        yield return FollowPlayer(defaultSpeed, () => false);
+        
+        inspecting = false;
     }
 
 
@@ -237,48 +288,74 @@ public class Patrol : MonoBehaviour
         visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
         visionConeRenderer.material.color = new Color(0f, 0f, 0f, visionConeAlpha);
 
-        exclamationMark = transform.Find("ExclamationMark").gameObject;
-        exclamationMark.SetActive(false);
+        suspicionIndicator = transform.Find("SuspicionIndicator").gameObject;
+        suspicionIndicator.SetActive(false);
     }
 
     void Update()
     {
-        if (!chasing) HandleAction();
-        else ChasePlayer();
+        if (!chasing && !inspecting) HandleAction(); 
     }
 
     void FixedUpdate()
     {
         //TODO: Move this out of fixed update cause not all of it is needed here
         
-        if (!chasing)
+        if (chasing) return;
+        
+        if (inspecting) goto checkForChase;
+        
+        bool hitPlayer = false;
+        for (int i = 0; i < visionConeResolution; i++)
         {
-            bool hitPlayer = false;
-            for (int i = 0; i < visionConeResolution; i++)
-            {
-                float t = 2f * i / visionConeResolution - 1f;
-                float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-                Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
-                Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
+            float t = 2f * i / visionConeResolution - 1f;
+            float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
+            Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * currentDirection;
+            Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
 
-                LayerMask rayMask = ~0;
-                rayMask &= ~LayerMask.GetMask("Mimicable", "Interactable", "NonPhysicsColliders");
-                RaycastHit2D hit = Physics2D.Linecast((Vector2)transform.position, rayEnd, rayMask);
-                if (hit.collider != null)
+            LayerMask rayMask = ~0;
+            rayMask &= ~LayerMask.GetMask("Mimicable", "Interactable", "NonPhysicsColliders");
+            RaycastHit2D hit = Physics2D.Linecast((Vector2)transform.position, rayEnd, rayMask);
+            if (hit.collider != null)
+            {
+                Player potentialPlayer = hit.collider.transform.GetComponent<Player>();
+                if (potentialPlayer != null)
                 {
-                    Player potentialPlayer = hit.collider.transform.GetComponent<Player>();
-                    if (potentialPlayer != null)
-                    {
-                        hitPlayer = true;
-                        player = potentialPlayer;
-                        break;
-                    }
+                    hitPlayer = true;
+                    player = potentialPlayer;
+                    prevPlayerPos = (Vector2)player.transform.position;
+                    break;
                 }
             }
-
-            visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.white, visionConeAlpha);
-            if (hitPlayer) chasing = true;
         }
+
+        visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.white, visionConeAlpha);
+        if (!hitPlayer) return; 
+        
+        checkForChase:
+        shouldChase = prevPlayerPos != (Vector2)player.transform.position;
+        if (shouldChase) return;
+
+        shouldInspect = !inspecting && Array.Exists(itemsOfInterest, x => x == player.spriteRenderer.sprite);
     }
 
+    void LateUpdate()
+    {
+        if (shouldChase) 
+        {
+            Debug.Log("hey");
+            if (inspecting) StopCoroutine(coroutine);
+            shouldChase = false;
+            coroutine = Chase();
+            StartCoroutine(coroutine);
+        }
+
+        if (shouldInspect)
+        {
+            Debug.Log("ho");
+            shouldInspect = false;
+            coroutine = Inspect();
+            StartCoroutine(coroutine);
+        }
+    }
 }

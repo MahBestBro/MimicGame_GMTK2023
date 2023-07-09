@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
+
     [HideInInspector] public List<Mimicable> mimicTargets;
     [HideInInspector] public List<Interactable> interactTargets;
 
@@ -12,7 +14,6 @@ public class Player : MonoBehaviour
     [SerializeField] float speed;
 
     Rigidbody2D rigidBody;
-    [SerializeField] SpriteRenderer spriteRenderer;
     [SerializeField] Collider2D mimicArea;
 
     Material originalMimicMaterial;

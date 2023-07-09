@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 533376925445293729}
   - component: {fileID: 1586619093163969362}
   m_Layer: 6
-  m_Name: ExclamationMark
+  m_Name: SuspicionIndicator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
