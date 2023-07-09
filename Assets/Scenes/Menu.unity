@@ -232,7 +232,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &171064990
 RectTransform:
   m_ObjectHideFlags: 0
@@ -910,7 +910,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &845947796
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1493,7 +1493,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -160.73257, y: -130.91397}
+  m_AnchoredPosition: {x: -160.73257, y: -154.56989}
   m_SizeDelta: {x: 408.0709, y: 523}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1607712132
@@ -1529,14 +1529,19 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
+  m_Text: 'Controls:
 
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-    ante enim, bibendum consectetur laoreet id, molestie id quam. Donec accumsan
-    laoreet metus eget elementum. Fusce vestibulum dictum est at auctor. Phasellus
-    eget tristique lacus, at gravida justo. Nullam aliquam felis felis, quis vulputate
-    lacus hendrerit a. Donec in molestie elit, at finibus tortor. Donec id magna
-    sapien.'
+    W S A D - Move
+
+    E - Toggle Mimicing (Left Click after
+    to mimic an item)
+
+
+    Aim of the Game:
+
+    Eat the Bulbous Knight by luring
+    him to you. The Bulbous Knight can be lured by mimicing yourself as somthing
+    he wants.'
 --- !u!222 &1607712133
 CanvasRenderer:
   m_ObjectHideFlags: 0
