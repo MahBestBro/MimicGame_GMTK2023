@@ -7,6 +7,7 @@ public enum PatrolActionKind
     FollowPath,
     Wait,
     PlayAnimation,
+    FaceDirection,
     ExitDungeon
 }
 
@@ -17,6 +18,7 @@ public class PatrolAction
     public PatrolPath path;
     public PatrolAnimation animation;
     public float waitTime;
+    public Vector2 directionToFace;
 }
 
 [System.Serializable]

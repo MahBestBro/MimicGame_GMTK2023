@@ -56,6 +56,7 @@ public class Patrol : MonoBehaviour
     //All of these members are the "action record", they represent where the patrol was in its
     //action sequence before being distracted
     Vector2 prevPos;
+    Vector2 prevDirection;
 
     bool Inspecting()
     {
@@ -95,6 +96,7 @@ public class Patrol : MonoBehaviour
     void StoreActionContext()
     {
         prevPos = (Vector2)transform.position;
+        prevDirection = visionConeDirection; 
     }
 
     void HandlePathWalk(PatrolPath path)
@@ -108,13 +110,13 @@ public class Patrol : MonoBehaviour
             }
 
             Vector2 destination = path.points[pathIndex];
-            Vector2 direction = (destination - path.points[pathIndex - 1]).normalized;
+            Vector2 direction = (destination - (Vector2)transform.position).normalized;
             SetVisionConeDirection(direction);
 
             transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
 
             //if ((Vector2)transform.position == destination)
-            if (V2ApproxEquals((Vector2)transform.position, destination, 0.05f))
+            if (V2ApproxEquals((Vector2)transform.position, destination, 0.02f))
             {
                 transform.position = path.points[pathIndex];
                 pathIndex++;
@@ -154,6 +156,16 @@ public class Patrol : MonoBehaviour
                 }
             } break;
 
+            case PatrolActionKind.FaceDirection:
+            {
+                startedAction = false;
+
+                SetVisionConeDirection(action.directionToFace);
+                
+                actionIndex++;
+                ResetActionContext();
+            } break;
+
             case PatrolActionKind.PlayAnimation: break; 
             //{
             //    if (startedAction)
@@ -181,57 +193,14 @@ public class Patrol : MonoBehaviour
 
     void ReturnToAction()
     {
-        if (actionIndex >= actions.Count) return;
+        Vector2 direction = (prevPos - (Vector2)transform.position).normalized;
+        SetVisionConeDirection(direction);
+        transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
 
-        PatrolAction action = actions[actionIndex];
-
-        switch(action.kind)
+        if (V2ApproxEquals((Vector2)transform.position, prevPos, 0.02f))
         {
-            case PatrolActionKind.FollowPath:
-            {
-                Vector2 direction = (prevPos - (Vector2)transform.position).normalized;
-                SetVisionConeDirection(direction);
-                transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
-
-                if (V2ApproxEquals((Vector2)transform.position, prevPos, 0.05f))
-                {
-                    state = PatrolState.PerformingScriptedActions;
-                }
-            } break;
-
-            case PatrolActionKind.Wait:
-            {
-                startedAction = false;
-
-                elapsedTime += Time.deltaTime;
-                if (elapsedTime > action.waitTime)
-                {
-                    actionIndex++;
-                }
-            } break;
-
-            case PatrolActionKind.PlayAnimation: break; 
-            //{
-            //    if (startedAction)
-            //    {
-            //        animation.AddClip(action.animation.clip, "clip");
-            //        animation.Play();
-            //        startedAction = false; 
-            //    }
-            //    
-            //    if (!animation.isPlaying) animation.Play();
-//
-            //    elapsedTime += Time.fixedDeltaTime;
-            //    if (elapsedTime > action.animation.extendedDuration)
-            //    {
-            //        animation.Stop();
-            //        animation.RemoveClip(action.animation.clip);
-            //        actionIndex++;
-            //        ResetActionContext();
-            //    }
-//
-            //} break;
-            case PatrolActionKind.ExitDungeon: startedAction = false; break;
+            SetVisionConeDirection(prevDirection);
+            state = PatrolState.PerformingScriptedActions;
         }
     }
 
