@@ -152,7 +152,6 @@ public class GlobalState : MonoBehaviour
         onGameLoss += FadeOutAndLoadLevel;
         showEndScreen += ShowEndScreen;
 
-        //endScreen.SetActive(false);
         StartCoroutine(StartTransition());
     }
 }

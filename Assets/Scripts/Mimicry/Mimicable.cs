@@ -12,7 +12,7 @@ public struct MimicableData
     }
 }
 
-[RequireComponent(typeof(CircleCollider2D))]
+[RequireComponent(typeof(Collider2D))]
 public class Mimicable : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriteRenderer;
