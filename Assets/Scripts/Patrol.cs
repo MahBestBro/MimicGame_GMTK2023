@@ -30,6 +30,8 @@ public class Patrol : MonoBehaviour
     [SerializeField] float detectWaitTime;
     [SerializeField] float inspectionTime;
 
+    [SerializeField] Animator animator; 
+
     Sprite[] itemSprites;
     float[] itemScores;
     int itemToAddScoreOfIndex;
@@ -105,6 +107,12 @@ public class Patrol : MonoBehaviour
         startedAction = true;
     }
 
+    public void NextAction()
+    {
+        actionIndex++;
+        ResetActionContext();
+    }
+
     void StoreActionContext()
     {
         prevPos = (Vector2)transform.position;
@@ -141,8 +149,7 @@ public class Patrol : MonoBehaviour
         }
         else
         {
-            actionIndex++;
-            ResetActionContext();
+            NextAction();
         }
     }
 
@@ -163,8 +170,7 @@ public class Patrol : MonoBehaviour
                 elapsedTime += Time.deltaTime;
                 if (elapsedTime > action.waitTime)
                 {
-                    actionIndex++;
-                    ResetActionContext();
+                    NextAction();
                 }
             } break;
 
@@ -173,32 +179,20 @@ public class Patrol : MonoBehaviour
                 startedAction = false;
 
                 SetVisionConeDirection(action.directionToFace);
-                
-                actionIndex++;
-                ResetActionContext();
+
+                NextAction();
             } break;
 
-            case PatrolActionKind.PlayAnimation: break; 
-            //{
-            //    if (startedAction)
-            //    {
-            //        animation.AddClip(action.animation.clip, "clip");
-            //        animation.Play();
-            //        startedAction = false; 
-            //    }
-            //    
-            //    if (!animation.isPlaying) animation.Play();
-//
-            //    elapsedTime += Time.fixedDeltaTime;
-            //    if (elapsedTime > action.animation.extendedDuration)
-            //    {
-            //        animation.Stop();
-            //        animation.RemoveClip(action.animation.clip);
-            //        actionIndex++;
-            //        ResetActionContext();
-            //    }
-//
-            //} break;
+            case PatrolActionKind.PlayAnimation:
+                {
+                    if (startedAction)
+                    {
+                        animator.Play(action.animation.stateName);
+                        startedAction = false;
+                    }
+                    // Handle NextAction() in animator
+                }
+                break;
             case PatrolActionKind.ExitDungeon: startedAction = false; break;
         }
     }
@@ -332,6 +326,8 @@ public class Patrol : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(!animator) animator = GetComponent<Animator>();
+
         Mesh visionConeMesh = new Mesh();
         Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
         int[] triangles = new int[3 * (vertices.Length - 2)];
@@ -355,7 +351,6 @@ public class Patrol : MonoBehaviour
 
         visionCone = transform.GetChild(0);
         visionCone.GetComponent<MeshFilter>().mesh = visionConeMesh;
-        //animation = GetComponent<Animation>();
 
         visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
         visionConeRenderer.material.color = new Color(0f, 0f, 0f, visionConeAlpha);
