@@ -33,6 +33,9 @@ public class PatrolPath
 [System.Serializable]
 public class PatrolAnimation
 {
+    // Use a different animatior if assigned
+    public Animator alternativeAnimator = null;
+    // State name in animation controller
     public string stateName;
     // If animation doesn't run as long as minDuration, wait.
     public float minDuration;

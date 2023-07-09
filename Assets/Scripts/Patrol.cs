@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
@@ -188,17 +188,25 @@ public class Patrol : MonoBehaviour
 
             case PatrolActionKind.PlayAnimation:
                 {
+                    bool usingOwnAnimator = (action.animation.alternativeAnimator == null);
+                    Animator anim = usingOwnAnimator ? animator : action.animation.alternativeAnimator;
+
                     if (startedAction)
                     {
-                        animator.Play(action.animation.stateName);
+                        anim.Play(action.animation.stateName);
                         startedAction = false;
                     }
+                    if (usingOwnAnimator)
+                    {
+                        elapsedTime += Time.deltaTime;
 
-                    elapsedTime += Time.deltaTime;
-                    
-                    animator.SetBool(animationActionEndPermissionHash, (elapsedTime >= action.animation.minDuration));
+                        anim.SetBool(animationActionEndPermissionHash, (elapsedTime >= action.animation.minDuration));
 
-                    // Handle NextAction() in animator
+                        // Handle NextAction() in animator
+                    } else
+                    {
+                        NextAction(); // After triggering alt animator, go right to next action
+                    }
                 }
                 break;
             case PatrolActionKind.ExitDungeon: startedAction = false; break;
@@ -302,22 +310,36 @@ public class Patrol : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        foreach (PatrolAction action in actions)
+        Vector2 lastLocation = transform.position;
+        for (int a = 0; a < actions.Count; a++)
         {
-            if (action.kind != PatrolActionKind.FollowPath) continue;
-
-            UnityEngine.Random.InitState(action.path.points.GetHashCode());
-            Gizmos.color = UnityEngine.Random.ColorHSV();
-            for (int i = 0; i < action.path.points.Length; i++)
+            PatrolAction action = actions[a];
+            switch (action.kind)
             {
-                Vector2 point = action.path.points[i];
-                Gizmos.DrawSphere((Vector3)point, 0.1f);
-                if(i>0)
-                {
-                    Gizmos.DrawLine(action.path.points[i-1], point);
-                }
+                case PatrolActionKind.FollowPath:
+                    UnityEngine.Random.InitState(action.path.points.GetHashCode());
+                    Handles.color = UnityEngine.Random.ColorHSV(0,1,0,1,0,1,1,1);
+                    for (int i = 0; i < action.path.points.Length; i++)
+                    {
+                        lastLocation = action.path.points[i];
+                        Gizmos.DrawSphere((Vector3)lastLocation, 0.1f);
+                        if (i > 0)
+                        {
+                            Handles.DrawLine(action.path.points[i - 1], lastLocation, 0.2f);
+                        }
+
+                    }
+                    UnityEngine.Random.InitState(new System.Random().Next(int.MinValue, int.MaxValue));
+                    break;
+                case PatrolActionKind.Wait:
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawSphere((Vector3)lastLocation, 0.5f);
+                    break;
+                case PatrolActionKind.PlayAnimation:
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawSphere((Vector3)lastLocation, 0.5f);
+                    break;
             }
-            UnityEngine.Random.InitState(new System.Random().Next(int.MinValue, int.MaxValue));
         }
 
         //for (int i = 0; i < visionConeResolution; i++)
