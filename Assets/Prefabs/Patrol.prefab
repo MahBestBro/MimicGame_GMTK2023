@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8270991871426996016}
   - component: {fileID: 9042839588641573212}
   - component: {fileID: 2021576156544410344}
+  - component: {fileID: 1067604475269233125}
   m_Layer: 6
   m_Name: VisionCone
   m_TagString: Untagged
@@ -83,6 +84,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1016620828263040349}
   m_Mesh: {fileID: 0}
+--- !u!210 &1067604475269233125
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1016620828263040349}
+  m_Enabled: 1
+  m_SortingLayerID: -510932765
+  m_SortingLayer: -1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &1921122159726311476
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +215,7 @@ Transform:
   - {fileID: 315788105325476053}
   - {fileID: 4925822301348512667}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1178830908582189645
 MonoBehaviour:

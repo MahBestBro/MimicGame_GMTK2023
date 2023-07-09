@@ -307,6 +307,8 @@ public class Patrol : MonoBehaviour
         }
     }
 
+    #if (UNITY_EDITOR)
+
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -352,6 +354,8 @@ public class Patrol : MonoBehaviour
         //    Gizmos.DrawLine((Vector2)transform.position, rayEnd);
         //}
     }
+
+    #endif
 
     // Start is called before the first frame update
     void Start()
