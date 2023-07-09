@@ -279,6 +279,7 @@ public class Patrol : MonoBehaviour
          
         player.Crumch();
         GlobalState.addToScore?.Invoke(itemScores[itemToAddScoreOfIndex]);
+        GlobalState.showEndScreen?.Invoke();
         Destroy(gameObject);
     }
 
