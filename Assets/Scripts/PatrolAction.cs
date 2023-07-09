@@ -34,6 +34,6 @@ public class PatrolPath
 public class PatrolAnimation
 {
     public string stateName;
-    // Duration that can exceed animation time, in which it will repeat the animation
-    // public float extendedDuration;
+    // If animation doesn't run as long as minDuration, wait.
+    public float minDuration;
 }
