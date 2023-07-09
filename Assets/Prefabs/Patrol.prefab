@@ -202,7 +202,7 @@ Transform:
   - {fileID: 315788105325476053}
   - {fileID: 4925822301348512667}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1178830908582189645
 MonoBehaviour:
@@ -220,7 +220,7 @@ MonoBehaviour:
   itemsOfInterest: []
   visionConeRadius: 8
   visionConeAngleDegrees: 30
-  visionConeAlpha: 0.5
+  visionConeAlpha: 0.1
   startingDirection: {x: 1, y: 0}
   defaultSpeed: 4
   chaseSpeed: 10

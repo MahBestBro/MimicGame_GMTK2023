@@ -363,7 +363,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9001329002939331589}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: -3.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -372,7 +372,7 @@ Transform:
   - {fileID: 1901212689813555601}
   - {fileID: 8018009284227059964}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2422710652967205824
 MonoBehaviour:
@@ -394,15 +394,30 @@ MonoBehaviour:
       - {x: 0.5, y: 0.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 0}
-  - kind: 1
+  - kind: 2
     path:
-      points: []
+      points:
+      - {x: -24.9, y: 87.5}
+      - {x: -24.5, y: 69.5}
+      - {x: -20.5, y: 65.5}
+      - {x: -13.5, y: 65.5}
+      - {x: -13.5, y: 58.5}
+      - {x: -13.5, y: 33.5}
+      - {x: -18.5, y: 17.5}
+      - {x: -15.5, y: 10.5}
+      - {x: -15.5, y: 0.5}
+      - {x: 0.5, y: 0.5}
+      - {x: 0.5, y: -8.5}
       repeats: 0
     animation:
-      stateName: 
+      alternativeAnimator: {fileID: 0}
+      stateName: CheckoutMirror
+      minDuration: 3
     waitTime: 3
     directionToFace: {x: 0, y: 0}
   - kind: 0
@@ -416,7 +431,9 @@ MonoBehaviour:
       - {x: 28.5, y: 19.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 0}
   - kind: 3
@@ -424,7 +441,9 @@ MonoBehaviour:
       points: []
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 1}
   - kind: 1
@@ -432,30 +451,44 @@ MonoBehaviour:
       points: []
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 10
+    directionToFace: {x: 0, y: 0}
+  - kind: 2
+    path:
+      points: []
+      repeats: 0
+    animation:
+      alternativeAnimator: {fileID: 0}
+      stateName: Perish
+      minDuration: 0
+    waitTime: 0
     directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
       - {x: 28.5, y: 19.5}
       - {x: 31.5, y: 24.5}
-      - {x: 31.5, y: 31.5}
+      - {x: 31.5, y: 28.5}
       - {x: 25.5, y: 28.5}
       - {x: 17.5, y: 28.5}
       - {x: 7.5, y: 25.5}
       - {x: -13.5, y: 25.5}
       - {x: -13.5, y: 45.5}
-      - {x: -18.5, y: 52.5}
+      - {x: -21.5, y: 52.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 0}
   - kind: 3
     path:
       points:
-      - {x: -24.5, y: 87.5}
+      - {x: -21.5, y: 87.5}
       - {x: -24.5, y: 69.5}
       - {x: -20.5, y: 65.5}
       - {x: -13.5, y: 65.5}
@@ -468,7 +501,9 @@ MonoBehaviour:
       - {x: 0.5, y: -8.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: -1, y: 1}
   - kind: 1
@@ -476,21 +511,25 @@ MonoBehaviour:
       points: []
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 15
     directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
-      - {x: -18.5, y: 52.5}
+      - {x: -21.5, y: 52.5}
       - {x: -13.5, y: 58.5}
       - {x: -13.5, y: 65.5}
       - {x: -20.5, y: 65.5}
       - {x: -24.5, y: 69.5}
-      - {x: -24.5, y: 87.5}
+      - {x: -24.9, y: 87.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 0}
   - kind: 3
@@ -498,7 +537,9 @@ MonoBehaviour:
       points: []
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 1}
   - kind: 1
@@ -506,13 +547,15 @@ MonoBehaviour:
       points: []
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 20
     directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
-      - {x: -24.5, y: 87.5}
+      - {x: -24.9, y: 87.5}
       - {x: -24.5, y: 69.5}
       - {x: -20.5, y: 65.5}
       - {x: -13.5, y: 65.5}
@@ -525,14 +568,20 @@ MonoBehaviour:
       - {x: 0.5, y: -8.5}
       repeats: 0
     animation:
+      alternativeAnimator: {fileID: 0}
       stateName: 
+      minDuration: 0
     waitTime: 0
     directionToFace: {x: 0, y: 0}
-  itemsOfInterest: []
+  itemsOfInterest:
+  - sprite: {fileID: 21300000, guid: a8628cbd60eff6e409676ce10ccb412e, type: 3}
+    interestScore: 10
+  - sprite: {fileID: 21300000, guid: 7daf8095dd14c1e41bfd181688f16dd9, type: 3}
+    interestScore: 20
   visionConeRadius: 8
   visionConeAngleDegrees: 30
-  visionConeAlpha: 0.5
-  startingDirection: {x: 1, y: 0}
+  visionConeAlpha: 0.1
+  startingDirection: {x: 0, y: 1}
   defaultSpeed: 4
   chaseSpeed: 10
   detectWaitTime: 1.5
