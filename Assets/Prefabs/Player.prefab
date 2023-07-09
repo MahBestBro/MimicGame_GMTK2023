@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 165540671094636916}
   - component: {fileID: 5923816921959642220}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MimicCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1169733800485067158}
   - component: {fileID: 8413419776720185080}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: InteractCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ Transform:
   - {fileID: 165540671094636916}
   - {fileID: 1169733800485067158}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4435750962796724748
 MonoBehaviour:

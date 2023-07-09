@@ -323,15 +323,15 @@ public class Patrol : MonoBehaviour
             foreach(Vector2 point in action.path.points) Gizmos.DrawSphere((Vector3)point, 0.1f);
         }
 
-        //for (int i = 0; i < visionConeResolution; i++)
-        //{
-        //    float t = 2f * i / visionConeResolution - 1f;
-        //    float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-        //    Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * visionConeDirection;
-        //    Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
-//
-        //    Gizmos.DrawLine((Vector2)transform.position, rayEnd);
-        //}
+        for (int i = 0; i < visionConeResolution; i++)
+        {
+            float t = 2f * i / visionConeResolution - 1f;
+            float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
+            Vector2 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * visionConeDirection;
+            Vector2 rayEnd = (Vector2)transform.position + rayDir * visionConeRadius;
+
+            Gizmos.DrawLine((Vector2)transform.position, rayEnd);
+        }
     }
 
     // Start is called before the first frame update
@@ -345,7 +345,7 @@ public class Patrol : MonoBehaviour
         {
             float t = 2f * i / (vertices.Length - 1) - 1f;
             float angleDegrees = Mathf.Lerp(-visionConeAngleDegrees, visionConeAngleDegrees, t);
-            Vector3 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * Vector3.left;
+            Vector3 rayDir = Quaternion.AngleAxis(angleDegrees, Vector3.forward) * Vector3.right;
             vertices[i] = rayDir * visionConeRadius;
 
             if (i < vertices.Length - 2)
@@ -365,7 +365,7 @@ public class Patrol : MonoBehaviour
         visionConeRenderer = visionCone.GetComponent<MeshRenderer>();
         visionConeRenderer.material.color = new Color(0f, 0f, 0f, visionConeAlpha);
 
-        //visionCone.rotation = Quaternion.identity;
+        visionCone.rotation = Quaternion.AngleAxis(0, Vector3.forward);
         SetVisionConeDirection(startingDirection);
 
         suspicionIndicator = transform.Find("SuspicionIndicator").gameObject;
