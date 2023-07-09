@@ -303,8 +303,19 @@ public class Patrol : MonoBehaviour
         foreach (PatrolAction action in actions)
         {
             if (action.kind != PatrolActionKind.FollowPath) continue;
-            
-            foreach(Vector2 point in action.path.points) Gizmos.DrawSphere((Vector3)point, 0.1f);
+
+            UnityEngine.Random.InitState(action.path.points.GetHashCode());
+            Gizmos.color = UnityEngine.Random.ColorHSV();
+            for (int i = 0; i < action.path.points.Length; i++)
+            {
+                Vector2 point = action.path.points[i];
+                Gizmos.DrawSphere((Vector3)point, 0.1f);
+                if(i>0)
+                {
+                    Gizmos.DrawLine(action.path.points[i-1], point);
+                }
+            }
+            UnityEngine.Random.InitState(new System.Random().Next(int.MinValue, int.MaxValue));
         }
 
         //for (int i = 0; i < visionConeResolution; i++)
