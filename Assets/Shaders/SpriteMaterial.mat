@@ -54,6 +54,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
+    - _HIGHLIGHTENABLED: 0
     - _HighlightEnabled: 0
     - _Highlight_Frequency: 8
     - _Highlight_ThicknessPercent: 0.2
