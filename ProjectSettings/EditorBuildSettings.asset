@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Sandbox.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: b0b4b59689bf01a4c9f973a943a58e9b
+  - enabled: 1
     path: Assets/Scenes/TheDungeon.unity
     guid: 898010aad35f6e047ab8c02a55236e5b
   m_configObjects: {}
