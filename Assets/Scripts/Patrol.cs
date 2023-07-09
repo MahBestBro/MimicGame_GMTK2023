@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -30,7 +31,8 @@ public class Patrol : MonoBehaviour
     [SerializeField] float detectWaitTime;
     [SerializeField] float inspectionTime;
 
-    [SerializeField] Animator animator; 
+    [SerializeField] Animator animator;
+    int animationActionEndPermissionHash;
 
     Sprite[] itemSprites;
     float[] itemScores;
@@ -61,7 +63,6 @@ public class Patrol : MonoBehaviour
     PatrolState state = PatrolState.PerformingScriptedActions;
 
     //All of these members are the "action context"
-    //Animation animation;
     int pathIndex = 1;
     int repeatCount = 0;
     float elapsedTime = 0f;
@@ -105,6 +106,8 @@ public class Patrol : MonoBehaviour
         repeatCount = 0;
         elapsedTime = 0f;
         startedAction = true;
+
+        animator.SetBool(animationActionEndPermissionHash, false);
     }
 
     public void NextAction()
@@ -190,6 +193,11 @@ public class Patrol : MonoBehaviour
                         animator.Play(action.animation.stateName);
                         startedAction = false;
                     }
+
+                    elapsedTime += Time.deltaTime;
+                    
+                    animator.SetBool(animationActionEndPermissionHash, (elapsedTime >= action.animation.minDuration));
+
                     // Handle NextAction() in animator
                 }
                 break;
@@ -213,7 +221,7 @@ public class Patrol : MonoBehaviour
     Color ChangeAlpha(Color c, float a)
     {
         return new Color(c.r, c.g, c.b, a);
-    } 
+    }
 
     void ChasePlayer()
     {
@@ -327,6 +335,7 @@ public class Patrol : MonoBehaviour
     void Start()
     {
         if(!animator) animator = GetComponent<Animator>();
+        animationActionEndPermissionHash = Animator.StringToHash("canEndAction");
 
         Mesh visionConeMesh = new Mesh();
         Vector3[] vertices = new Vector3[visionConeResolution + 1]; //+1 for point of origin
