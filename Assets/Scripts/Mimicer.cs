@@ -116,7 +116,8 @@ public class Mimicer : MonoBehaviour
 
     public void RemoveMimicTarget(Mimicable mimicable)
     {
-        if(mimicTargets.Count>0) mimicTargets.Remove(mimicable);
+        SetHighlightOnSprite(mimicable.GetMimicableData().spriteRenderer, false);
+        if (mimicTargets.Count>0) mimicTargets.Remove(mimicable);
     }
 
     public bool isDisguisedAs(Sprite sprite)
