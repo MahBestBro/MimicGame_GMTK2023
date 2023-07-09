@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class ItemOfInterest
@@ -15,6 +16,8 @@ public class Patrol : MonoBehaviour
 {
     const int visionConeResolution = 128;
     readonly Color inspectColor = new Color(48, 41, 36) / 255f; 
+
+    [SerializeField] UnityEvent onExitDungeon;
 
     [SerializeField] List<PatrolAction> actions;
     [SerializeField] ItemOfInterest[] itemsOfInterest;
@@ -209,7 +212,11 @@ public class Patrol : MonoBehaviour
                     }
                 }
                 break;
-            case PatrolActionKind.ExitDungeon: startedAction = false; break;
+            case PatrolActionKind.ExitDungeon: 
+            {
+                onExitDungeon.Invoke();
+                startedAction = false; 
+            } break;
         }
     }
 
