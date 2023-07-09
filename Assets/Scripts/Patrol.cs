@@ -21,7 +21,7 @@ public class Patrol : MonoBehaviour
     
     [SerializeField] float visionConeRadius = 8f;
     [SerializeField][Range(0, 360)] float visionConeAngleDegrees = 30f;
-    [SerializeField][Range(0, 1)] float visionConeAlpha = 0.5f;
+    [SerializeField][Range(0, 1)] float visionConeAlpha = 0.1f;
     
     [SerializeField] Vector2 startingDirection;
 
@@ -447,7 +447,7 @@ public class Patrol : MonoBehaviour
             }
         }
 
-        visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.white, visionConeAlpha);
+        visionConeRenderer.material.color = ChangeAlpha(hitPlayer ? Color.red : Color.black, visionConeAlpha);
         if (!hitPlayer) 
         {
             firstHit = true;
