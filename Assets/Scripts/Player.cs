@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
 
     public void Crumch()
     {
+        audioSource.volume = Jukebox.volume;
         audioSource.Play();
     }
 
