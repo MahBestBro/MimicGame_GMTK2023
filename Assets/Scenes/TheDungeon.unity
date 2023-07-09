@@ -7652,7 +7652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[4].waitTime
-      value: 11.5
+      value: 12.9
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[5].waitTime
@@ -7664,7 +7664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[7].waitTime
-      value: 13
+      value: 14.4
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[8].waitTime
@@ -55055,7 +55055,7 @@ MonoBehaviour:
       alternativeAnimator: {fileID: 0}
       stateName: 
       minDuration: 0
-    waitTime: 10
+    waitTime: 11.4
     directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
@@ -74552,7 +74552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[4].waitTime
-      value: 11.5
+      value: 12.9
       objectReference: {fileID: 0}
     - target: {fileID: 1178830908582189645, guid: 353c0eb1b63206849bbf2e9a9a9677b4, type: 3}
       propertyPath: actions.Array.data[5].waitTime
