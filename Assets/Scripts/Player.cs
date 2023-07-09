@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     Rigidbody2D rigidBody;
 
     Mimicer mimicry;
-    
+
     public void Shart()
     {
         Debug.Log("pfft");
@@ -21,19 +21,19 @@ public class Player : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {   
+    {
         rigidBody = GetComponent<Rigidbody2D>();
         mimicry = GetComponent<Mimicer>();
     }
 
-    
+
 
     void Update()
     {
         //Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         //mouseWorldPos.z = 0f;
 
-        Camera.main.transform.position = transform.position + Vector3.back * 10f; 
+        Camera.main.transform.position = transform.position + Vector3.back * 10f;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -45,8 +45,8 @@ public class Player : MonoBehaviour
             Interactable nearest = interactTargets[0];
             foreach (Interactable target in interactTargets)
             {
-                float nearestSqDist = (nearest.transform.position - transform.position).sqrMagnitude; 
-                float targetSqDist = (target.transform.position - transform.position).sqrMagnitude; 
+                float nearestSqDist = (nearest.transform.position - transform.position).sqrMagnitude;
+                float targetSqDist = (target.transform.position - transform.position).sqrMagnitude;
                 if (targetSqDist < nearestSqDist) nearest = target;
             }
 
