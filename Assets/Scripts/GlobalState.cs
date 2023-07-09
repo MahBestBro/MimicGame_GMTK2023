@@ -11,9 +11,17 @@ public class GlobalState : MonoBehaviour
     public static Action<float> addToScore;
     public static Action showEndScreen;
 
+    //NOTE: Needs to be set in both scenes
     [SerializeField] Transform transitionPanel;
+    
+    //NOTE: Needs to be set in dungeon scene 
     [SerializeField] GameObject endScreen;
     [SerializeField] Text scoreText;
+
+    //NOTE: Needs to be set in menu scene
+    [SerializeField] GameObject howToPlayScreen;
+    [SerializeField] GameObject mainMenu;
+    [SerializeField] Text title;
 
     [SerializeField] float transitionTime;
 
@@ -25,10 +33,10 @@ public class GlobalState : MonoBehaviour
         Application.Quit();
     }
 
-    public void ResetLevel()
+    void ResetLevel()
     {
         addToScore -= AddToScore;
-        onGameLoss -= OnGameLoss;
+        onGameLoss -= FadeOutAndLoadLevel;
         showEndScreen -= ShowEndScreen;
         SceneManager.LoadScene(0);
         
@@ -38,9 +46,23 @@ public class GlobalState : MonoBehaviour
         image.color = newColour;
     }
 
-    void OnGameLoss()
+    public void FadeOutAndLoadLevel()
     {
         StartCoroutine(Transition(ResetLevel, false));
+    }
+
+    public void ShowHowToPlay()
+    {
+        title.text = "How to Play";
+        mainMenu.SetActive(false);
+        howToPlayScreen.SetActive(true);
+    }
+
+    public void ShowMainMenu()
+    {
+        title.text = "Mimic's Dungeon";
+        howToPlayScreen.SetActive(false);
+        mainMenu.SetActive(true);
     }
 
     void AddToScore(float addedScore)
@@ -61,11 +83,24 @@ public class GlobalState : MonoBehaviour
 
     IEnumerator Transition(Action inbetween, bool fadeOut = true)
     {
+        transitionPanel.gameObject.SetActive(true);
         Image image = transitionPanel.GetComponent<Image>();
         yield return FadeTransitionPanel(image, 1f);
         yield return new WaitForSeconds(0.5f);
         inbetween();
-        if (fadeOut) yield return FadeTransitionPanel(image, 0f);
+        if (fadeOut) 
+        {
+            yield return FadeTransitionPanel(image, 0f);
+            transitionPanel.gameObject.SetActive(false);
+        }
+    }
+
+    IEnumerator StartTransition()
+    {
+        transitionPanel.gameObject.SetActive(true);
+        Image image = transitionPanel.GetComponent<Image>();
+        yield return FadeTransitionPanel(image, 0f);
+        transitionPanel.gameObject.SetActive(false);
     }
 
     float elapsedTime = 0f;
@@ -90,11 +125,10 @@ public class GlobalState : MonoBehaviour
     void Awake()
     {
         addToScore += AddToScore;
-        onGameLoss += OnGameLoss;
+        onGameLoss += FadeOutAndLoadLevel;
         showEndScreen += ShowEndScreen;
 
-        endScreen.SetActive(false);
-        Image image = transitionPanel.GetComponent<Image>();
-        StartCoroutine(FadeTransitionPanel(image, 0f));
+        //endScreen.SetActive(false);
+        StartCoroutine(StartTransition());
     }
 }
