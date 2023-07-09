@@ -6,9 +6,23 @@ using UnityEngine.Events;
 [RequireComponent(typeof(CircleCollider2D))]
 public class Interactable : MonoBehaviour
 {
-    public UnityEvent onInteract;
+    [SerializeField] GameObject prompt;
+    [SerializeField] ParticleSystem triggerInteractionEffect;
 
-    GameObject prompt;
+    protected virtual void Start()
+    {
+        if (prompt == null) prompt = transform.GetChild(0).gameObject;
+        prompt.SetActive(false);
+    }
+
+    public virtual void Interact(GameObject interactor)
+    {
+        Debug.Log($"{this.name} Interacted with by {interactor.name}");
+        if (triggerInteractionEffect)
+        {
+            triggerInteractionEffect.Play();
+        }
+    }
 
     public void DisplayInteractPrompt()
     {
@@ -32,18 +46,5 @@ public class Interactable : MonoBehaviour
             player.interactTargets.Remove(this);
             prompt.SetActive(false);
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        prompt = transform.GetChild(0).gameObject;
-        prompt.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

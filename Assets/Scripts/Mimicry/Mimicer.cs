@@ -125,6 +125,16 @@ public class Mimicer : MonoBehaviour
         return spriteRenderer.sprite == sprite;
     }
 
+    public Sprite GetCurrentSprite()
+    {
+        return spriteRenderer.sprite;
+    }
+
+    public void SwapToSprite(Sprite sprite)
+    {
+        spriteRenderer.sprite = sprite;
+    }
+
     void Update()
     {
         TrackPreviousMimicable();

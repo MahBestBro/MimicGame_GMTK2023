@@ -16,11 +16,6 @@ public class Player : MonoBehaviour
 
     Mimicer mimicry;
 
-    public void Shart()
-    {
-        Debug.Log("pfft");
-    }
-
     public void Crumch()
     {
         audioSource.Play();
@@ -63,7 +58,7 @@ public class Player : MonoBehaviour
 
             nearest.DisplayInteractPrompt();
 
-            if (Input.GetKeyDown(KeyCode.Space)) nearest.onInteract.Invoke();
+            if (Input.GetKeyDown(KeyCode.Space)) nearest.Interact(this.gameObject);
         }
     }
 
