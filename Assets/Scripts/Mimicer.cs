@@ -62,7 +62,7 @@ public class Mimicer : MonoBehaviour
             mimicArea.enabled = false;
             mimicTargets.Clear();
             // If previous mimicable was highlighted, untrack and unhighlight
-            if (previousMimicable is Mimicable) SetHighlightOnSprite(previousMimicable.GetComponent<SpriteRenderer>(), false);
+            if (previousMimicable is Mimicable) SetHighlightOnSprite(previousMimicable.GetMimicableData().spriteRenderer, false);
             previousMimicable = null;
         }
     }
