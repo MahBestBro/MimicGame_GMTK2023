@@ -299,7 +299,7 @@ Transform:
   - {fileID: 1901212689813555601}
   - {fileID: 9083783794665990533}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2422710652967205824
 MonoBehaviour:
@@ -324,6 +324,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 0
+    directionToFace: {x: 0, y: 0}
   - kind: 1
     path:
       points: []
@@ -332,6 +333,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 3
+    directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
@@ -346,6 +348,16 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 0
+    directionToFace: {x: 0, y: 0}
+  - kind: 3
+    path:
+      points: []
+      repeats: 0
+    animation:
+      clip: {fileID: 0}
+      extendedDuration: 0
+    waitTime: 0
+    directionToFace: {x: 0, y: 1}
   - kind: 1
     path:
       points: []
@@ -354,6 +366,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 10
+    directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
@@ -371,6 +384,27 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 0
+    directionToFace: {x: 0, y: 0}
+  - kind: 3
+    path:
+      points:
+      - {x: -24.5, y: 87.5}
+      - {x: -24.5, y: 69.5}
+      - {x: -20.5, y: 65.5}
+      - {x: -13.5, y: 65.5}
+      - {x: -13.5, y: 58.5}
+      - {x: -13.5, y: 33.5}
+      - {x: -18.5, y: 17.5}
+      - {x: -15.5, y: 10.5}
+      - {x: -15.5, y: 0.5}
+      - {x: 0.5, y: 0.5}
+      - {x: 0.5, y: -8.5}
+      repeats: 0
+    animation:
+      clip: {fileID: 0}
+      extendedDuration: 0
+    waitTime: 0
+    directionToFace: {x: -1, y: 1}
   - kind: 1
     path:
       points: []
@@ -379,6 +413,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 15
+    directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
@@ -393,6 +428,16 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 0
+    directionToFace: {x: 0, y: 0}
+  - kind: 3
+    path:
+      points: []
+      repeats: 0
+    animation:
+      clip: {fileID: 0}
+      extendedDuration: 0
+    waitTime: 0
+    directionToFace: {x: 0, y: 1}
   - kind: 1
     path:
       points: []
@@ -401,6 +446,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 20
+    directionToFace: {x: 0, y: 0}
   - kind: 0
     path:
       points:
@@ -420,6 +466,7 @@ MonoBehaviour:
       clip: {fileID: 0}
       extendedDuration: 0
     waitTime: 0
+    directionToFace: {x: 0, y: 0}
   itemsOfInterest: []
   visionConeRadius: 8
   visionConeAngleDegrees: 30
