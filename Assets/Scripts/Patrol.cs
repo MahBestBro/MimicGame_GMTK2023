@@ -419,7 +419,7 @@ public class Patrol : MonoBehaviour
             return;
         }
 
-        if (!Inspecting() && Array.Exists(itemsOfInterest, x => x == player.spriteRenderer.sprite))
+        if (!Inspecting() && Array.Exists(itemsOfInterest, x => player.GetMimicComponent().isDisguisedAs(x)))
             state = PatrolState.AboutToInspect;
     }
 
