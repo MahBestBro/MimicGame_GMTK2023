@@ -314,6 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions: []
+  itemsOfInterest: []
   visionConeRadius: 8
   visionConeAngleDegrees: 30
   visionConeAlpha: 0.5
@@ -321,6 +322,7 @@ MonoBehaviour:
   defaultSpeed: 4
   chaseSpeed: 10
   detectWaitTime: 1.5
+  inspectionTime: 2
   chaseCollider: {fileID: 0}
 --- !u!95 &137207419932099978
 Animator:

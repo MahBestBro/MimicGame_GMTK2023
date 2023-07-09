@@ -20,12 +20,13 @@ public class Patrol : MonoBehaviour
     [SerializeField] float chaseSpeed;
 
     [SerializeField] float detectWaitTime;
+    [SerializeField] float inspectionTime;
 
     [SerializeField] Collider2D chaseCollider;
     
     Transform visionCone;
     MeshRenderer visionConeRenderer;
-    Vector2 currentDirection;
+    Vector2 currentDirection; //NOTE: This is mostly only meant to be written over in Update 
 
     GameObject suspicionIndicator;
 
@@ -35,12 +36,18 @@ public class Patrol : MonoBehaviour
     int actionIndex = 0;
 
     IEnumerator coroutine;
-    bool shouldChase = false;
-    bool chasing = false;
-    bool shouldInspect = false;
-    bool inspecting = false;
+    enum PatrolState
+    {
+        PerformingScriptedActions,
+        ReturnToScriptedAction,
+        AboutToInspect,
+        Inspecting,
+        AboutToChase,
+        Chasing
+    };
+    PatrolState state = PatrolState.PerformingScriptedActions;
 
-    //All of these members are the "action state"
+    //All of these members are the "action context"
     //Animation animation;
     int pathIndex = 1;
     int repeatCount = 0;
@@ -51,7 +58,20 @@ public class Patrol : MonoBehaviour
     //action sequence before being distracted
     Vector2 prevPos;
 
+    bool Inspecting()
+    {
+        return state == PatrolState.AboutToInspect || state == PatrolState.Inspecting;
+    }
 
+    bool Chasing()
+    {
+        return state == PatrolState.AboutToChase || state == PatrolState.Chasing;
+    }
+
+    bool Following()
+    {
+        return Inspecting() || Chasing();
+    }
 
     bool V2ApproxEquals(Vector2 a, Vector2 b, float epsilon)
     {
@@ -59,12 +79,24 @@ public class Patrol : MonoBehaviour
                b.y <= a.y + epsilon && b.y >= a.y - epsilon;
     }
 
-    void ResetActionState()
+    void SetVisionConeDirection(Vector2 direction)
+    {
+        float rotationAngle = Vector2.SignedAngle(currentDirection, direction.normalized);
+        visionCone.rotation *= Quaternion.AngleAxis(rotationAngle, Vector3.forward);
+        currentDirection = direction;
+    }
+
+    void ResetActionContext()
     {
         pathIndex = 1;
         repeatCount = 0;
         elapsedTime = 0f;
         startedAction = true;
+    }
+
+    void StoreActionContext()
+    {
+        prevPos = (Vector2)transform.position;
     }
 
     void HandlePathWalk(PatrolPath path)
@@ -75,16 +107,11 @@ public class Patrol : MonoBehaviour
             {
                 transform.position = path.points[0];
                 startedAction = false;
-
-                visionCone.rotation = Quaternion.identity;
-                Vector2 firstDirection = path.points[1] - path.points[0];
-                float rotationAngle = Vector2.SignedAngle(firstDirection, Vector2.left);
-                visionCone.rotation *= Quaternion.AngleAxis(rotationAngle, Vector3.forward);
             }
 
             Vector2 destination = path.points[pathIndex];
             Vector2 direction = (destination - path.points[pathIndex - 1]).normalized;
-            currentDirection = direction;
+            SetVisionConeDirection(direction);
 
             transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
 
@@ -95,11 +122,9 @@ public class Patrol : MonoBehaviour
 
                 //Vector2 prevDirection = destination - path.points[pathIndex - 1];
                 pathIndex++;
-                if (pathIndex == path.points.Length) return;
+                //if (pathIndex == path.points.Length) return;
 
-                Vector2 newDirection = (path.points[pathIndex] - path.points[pathIndex - 1]).normalized;
-                float rotationAngle = Vector2.SignedAngle(direction, newDirection);
-                visionCone.rotation *= Quaternion.AngleAxis(rotationAngle, Vector3.forward);
+                //SetVisionConeDirection((path.points[pathIndex] - path.points[pathIndex - 1]).normalized);
             }
         }
         else if (repeatCount < path.repeats)
@@ -110,11 +135,11 @@ public class Patrol : MonoBehaviour
         else
         {
             actionIndex++;
-            ResetActionState();
+            ResetActionContext();
         }
     }
 
-    void HandleAction()
+    void PerformAction()
     {
         if (actionIndex >= actions.Count) return;
 
@@ -132,7 +157,7 @@ public class Patrol : MonoBehaviour
                 if (elapsedTime > action.waitTime)
                 {
                     actionIndex++;
-                    ResetActionState();
+                    ResetActionContext();
                 }
             } break;
 
@@ -153,7 +178,63 @@ public class Patrol : MonoBehaviour
             //        animation.Stop();
             //        animation.RemoveClip(action.animation.clip);
             //        actionIndex++;
-            //        ResetActionState();
+            //        ResetActionContext();
+            //    }
+//
+            //} break;
+            case PatrolActionKind.ExitDungeon: startedAction = false; break;
+        }
+    }
+
+    void ReturnToAction()
+    {
+        if (actionIndex >= actions.Count) return;
+
+        PatrolAction action = actions[actionIndex];
+
+        switch(action.kind)
+        {
+            case PatrolActionKind.FollowPath:
+            {
+                Vector2 direction = (prevPos - (Vector2)transform.position).normalized;
+                SetVisionConeDirection(direction);
+                transform.position += (Vector3)direction * defaultSpeed * Time.deltaTime;
+
+                if (V2ApproxEquals((Vector2)transform.position, prevPos, 0.05f))
+                {
+                    state = PatrolState.PerformingScriptedActions;
+                }
+            } break;
+
+            case PatrolActionKind.Wait:
+            {
+                startedAction = false;
+
+                elapsedTime += Time.deltaTime;
+                if (elapsedTime > action.waitTime)
+                {
+                    actionIndex++;
+                }
+            } break;
+
+            case PatrolActionKind.PlayAnimation: break; 
+            //{
+            //    if (startedAction)
+            //    {
+            //        animation.AddClip(action.animation.clip, "clip");
+            //        animation.Play();
+            //        startedAction = false; 
+            //    }
+            //    
+            //    if (!animation.isPlaying) animation.Play();
+//
+            //    elapsedTime += Time.fixedDeltaTime;
+            //    if (elapsedTime > action.animation.extendedDuration)
+            //    {
+            //        animation.Stop();
+            //        animation.RemoveClip(action.animation.clip);
+            //        actionIndex++;
+            //        ResetActionContext();
             //    }
 //
             //} break;
@@ -189,11 +270,9 @@ public class Patrol : MonoBehaviour
         suspicionIndicator.GetComponent<TextMesh>().text = suspicionPrompt;
         suspicionIndicator.SetActive(true);
         yield return new WaitForSeconds(detectWaitTime);
-
         suspicionIndicator.SetActive(false);
     }
 
-    float prevDt = 0f;
     IEnumerator FollowPlayer(float speed, Func<bool> shouldStop)
     {
         while (!shouldStop())
@@ -201,37 +280,39 @@ public class Patrol : MonoBehaviour
             Vector3 direction = (player.transform.position - transform.position).normalized;
             direction.z = 0f;
             transform.position += speed * direction * Time.deltaTime;
-            prevDt = Time.deltaTime;
             yield return null;
         }
     }
 
     IEnumerator Chase()
     {
-        chasing = true;
-
         yield return StartCoroutine(ShowSuspicion("!"));
-        yield return FollowPlayer(chaseSpeed, () => false);
+        yield return FollowPlayer(chaseSpeed, () => endFollow);  
         
-        chasing = false;
+        endFollow = false; 
     }
 
     IEnumerator Inspect()
     {
-        inspecting = true;
-
         yield return StartCoroutine(ShowSuspicion("?"));
-        yield return FollowPlayer(defaultSpeed, () => false);
+        yield return FollowPlayer(defaultSpeed, () => endFollow);
+        yield return new WaitForSeconds(inspectionTime); //TODO: Replace dummy code
         
-        inspecting = false;
+        state = PatrolState.ReturnToScriptedAction;
+        SetVisionConeDirection(prevPos - (Vector2)transform.position);
+        endFollow = false;
     }
 
-
+    bool endFollow = false;
     void OnTriggerEnter2D(Collider2D other)
     {
         //TODO: make use of player member instead
         Player potentialPlayer = other.transform.GetComponent<Player>();
-        if (potentialPlayer != null) GlobalState.onGameLoss?.Invoke();
+        if (potentialPlayer != null && Following()) 
+        {
+            if (Chasing()) GlobalState.onGameLoss?.Invoke();
+            endFollow = true;
+        }
     }
 
     void OnDrawGizmosSelected()
@@ -294,16 +375,15 @@ public class Patrol : MonoBehaviour
 
     void Update()
     {
-        if (!chasing && !inspecting) HandleAction(); 
+        if (state == PatrolState.PerformingScriptedActions) PerformAction(); 
+        else if (state == PatrolState.ReturnToScriptedAction) ReturnToAction();
     }
 
     void FixedUpdate()
     {
-        //TODO: Move this out of fixed update cause not all of it is needed here
+        if (Chasing()) return;
         
-        if (chasing) return;
-        
-        if (inspecting) goto checkForChase;
+        if (Inspecting()) goto checkForChase;
         
         bool hitPlayer = false;
         for (int i = 0; i < visionConeResolution; i++)
@@ -333,27 +413,31 @@ public class Patrol : MonoBehaviour
         if (!hitPlayer) return; 
         
         checkForChase:
-        shouldChase = prevPlayerPos != (Vector2)player.transform.position;
-        if (shouldChase) return;
+        if (prevPlayerPos != (Vector2)player.transform.position) 
+        {
+            state = PatrolState.AboutToChase;
+            return;
+        }
 
-        shouldInspect = !inspecting && Array.Exists(itemsOfInterest, x => player.GetMimicComponent().isDisguisedAs(x));
+        if (!Inspecting() && Array.Exists(itemsOfInterest, x => player.GetMimicComponent().isDisguisedAs(x)))
+            state = PatrolState.AboutToInspect;
     }
 
     void LateUpdate()
     {
-        if (shouldChase) 
+        if (state == PatrolState.AboutToChase) 
         {
-            Debug.Log("hey");
-            if (inspecting) StopCoroutine(coroutine);
-            shouldChase = false;
+            StopCoroutine(coroutine);
+            state = PatrolState.Chasing;
             coroutine = Chase();
             StartCoroutine(coroutine);
         }
 
-        if (shouldInspect)
+        if (state == PatrolState.AboutToInspect)
         {
-            Debug.Log("ho");
-            shouldInspect = false;
+            StoreActionContext();
+
+            state = PatrolState.Inspecting;
             coroutine = Inspect();
             StartCoroutine(coroutine);
         }
