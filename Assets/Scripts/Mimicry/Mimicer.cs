@@ -105,7 +105,7 @@ public class Mimicer : MonoBehaviour
         spriteRenderer.sprite = mimicableData.spriteRenderer.sprite;
         Vector3 mimicableScale = mimicableData.spriteRenderer.transform.lossyScale;
         spriteRenderer.transform.localScale = mimicableScale;
-        Vector3 delta = new Vector3(0, -spriteRenderer.transform.localPosition.y + (mimicableData.spriteRenderer.sprite.pivot.y - mimicableScale.y));
+        Vector3 delta = new Vector3(0, -spriteRenderer.transform.localPosition.y + ((spriteRenderer.sprite.pivot.y / spriteRenderer.sprite.textureRect.height) - 0.5f));
         spriteRenderer.transform.localPosition += delta;
     }
 

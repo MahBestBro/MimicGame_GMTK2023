@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2084871629263768194}
   - component: {fileID: 2299645424794334454}
   - component: {fileID: 1048170482129271045}
+  - component: {fileID: 2367537189154138350}
   m_Layer: 6
   m_Name: SuspicionIndicator
   m_TagString: Untagged
@@ -97,3 +98,15 @@ TextMesh:
   m_Color:
     serializedVersion: 2
     rgba: 4278192895
+--- !u!210 &2367537189154138350
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4443364361305834494}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 100
+  m_SortAtRoot: 0

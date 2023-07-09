@@ -144,6 +144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9063261311922826063}
   - component: {fileID: 1364853798257101243}
+  - component: {fileID: 3737292839237730500}
   m_Layer: 0
   m_Name: a guy
   m_TagString: Untagged
@@ -219,6 +220,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
+--- !u!210 &3737292839237730500
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7324425161642368029}
+  m_Enabled: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &8248776978457727513
 GameObject:
   m_ObjectHideFlags: 0

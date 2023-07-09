@@ -87081,7 +87081,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: actions.Array.data[13].waitTime
-      value: 0.4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: actions.Array.data[14].waitTime
@@ -87225,7 +87225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: actions.Array.data[8].animation.minDuration
-      value: 1.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2422710652967205824, guid: 995b2a3998b7661458b81a14108f7568, type: 3}
       propertyPath: itemsOfInterest.Array.data[0].interestScore

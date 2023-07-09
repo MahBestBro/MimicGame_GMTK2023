@@ -156,7 +156,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 54b28da4400b2be468715c539b661a3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -167,7 +167,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &5318234909851092928
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,6 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1901212689813555601}
   - component: {fileID: 6705816416239279163}
+  - component: {fileID: 1450927774512577777}
   m_Layer: 6
   m_Name: Sprite
   m_TagString: Untagged
@@ -254,7 +255,19 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
+--- !u!210 &1450927774512577777
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5318234909851092928}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &6362340462074884699
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,7 +341,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 54b28da4400b2be468715c539b661a3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -339,7 +352,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &7159314188316986581
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,14 +377,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7159314188316986581}
-  m_LocalRotation: {x: 0, y: 0, z: -0.06888596, w: 0.9976245}
-  m_LocalPosition: {x: 1.6, y: -1.11, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.107525826, w: 0.9942024}
+  m_LocalPosition: {x: 1.65, y: -1.19, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4106381697787395222}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -7.9}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -12.345}
 --- !u!212 &4791315317036989851
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -423,7 +436,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1 &7425069508238368988
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,6 +570,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62ec3eeb3cc095b42ae4d34fb7bcdc9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onExitDungeon:
+    m_PersistentCalls:
+      m_Calls: []
   actions:
   - kind: 0
     path:
