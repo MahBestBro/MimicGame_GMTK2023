@@ -41421,7 +41421,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Play Again
+  m_Text: Menu
 --- !u!222 &1164185269
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49478,7 +49478,7 @@ GameObject:
   - component: {fileID: 1378544728}
   - component: {fileID: 1378544727}
   m_Layer: 5
-  m_Name: PlayAgainButton
+  m_Name: MenuButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49551,7 +49551,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1339950186}
         m_TargetAssemblyTypeName: GlobalState, Assembly-CSharp
-        m_MethodName: ResetLevel
+        m_MethodName: FadeOutAndLoadMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
