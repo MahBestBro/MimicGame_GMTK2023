@@ -12,7 +12,7 @@ public class Mimicer : MonoBehaviour
     public List<Mimicable> mimicTargets;
     [SerializeField] Collider2D mimicArea;
 
-    Mimicable? previousMimicable = null;
+    Mimicable previousMimicable = null;
 
 
     void Start()
@@ -23,7 +23,7 @@ public class Mimicer : MonoBehaviour
     }
 
     // Get Nearest Mimicable in mimicTargets in direction of cursor
-    Mimicable? GetNearestMimicable()
+    Mimicable GetNearestMimicable()
     {
         if (mimicTargets.Count == 0) return null;
 
