@@ -3,12 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class ItemOfInterest
+{
+    public Sprite sprite;
+    public float interestScore;
+}
+
 public class Patrol : MonoBehaviour
 {
     const int visionConeResolution = 128;
 
     [SerializeField] List<PatrolAction> actions;
-    [SerializeField] Sprite[] itemsOfInterest;
+    [SerializeField] ItemOfInterest[] itemsOfInterest;
     
     [SerializeField] float visionConeRadius = 8f;
     [SerializeField][Range(0, 360)] float visionConeAngleDegrees = 30f;
@@ -21,6 +28,10 @@ public class Patrol : MonoBehaviour
 
     [SerializeField] float detectWaitTime;
     [SerializeField] float inspectionTime;
+
+    Sprite[] itemSprites;
+    float[] itemScores;
+    int itemToAddScoreOfIndex;
 
     Transform visionCone;
     MeshRenderer visionConeRenderer;
@@ -267,6 +278,7 @@ public class Patrol : MonoBehaviour
         yield return FollowPlayer(defaultSpeed, () => endFollow);
          
         player.Crumch();
+        GlobalState.addToScore?.Invoke(itemScores[itemToAddScoreOfIndex]);
         Destroy(gameObject);
     }
 
@@ -338,6 +350,16 @@ public class Patrol : MonoBehaviour
 
         suspicionIndicator = transform.Find("SuspicionIndicator").gameObject;
         suspicionIndicator.SetActive(false);
+
+        Sprite[] sprites = new Sprite[itemsOfInterest.Length];
+        float[] scores = new float[itemsOfInterest.Length];
+        for (int i = 0; i < itemsOfInterest.Length; i++)
+        {
+            sprites[i] = itemsOfInterest[i].sprite;
+            scores[i] = itemsOfInterest[i].interestScore;
+        }
+        itemSprites = sprites;
+        itemScores = scores;
     }
 
     void Update()
@@ -395,8 +417,15 @@ public class Patrol : MonoBehaviour
             return;
         }
 
-        if (!Inspecting() && Array.Exists(itemsOfInterest, x => player.GetMimicComponent().isDisguisedAs(x)))
+        int currestDisguiseIndex = Array.FindIndex(
+            itemSprites,
+            x => player.GetMimicComponent().isDisguisedAs(x)
+        );
+        if (!Inspecting() && currestDisguiseIndex >= 0)
+        {
+            itemToAddScoreOfIndex = currestDisguiseIndex;
             state = PatrolState.AboutToInspect;
+        }
     }
 
     void LateUpdate()
