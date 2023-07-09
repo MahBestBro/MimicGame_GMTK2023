@@ -283,8 +283,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 1364853798257101243}
+  spriteShaderValidator: {fileID: -6465566751694194690, guid: 2dc84cc9823b97446803b9a4f7d80382, type: 3}
   mimicTargets: []
-  mimicSelectMaterial: {fileID: -876546973899608171, guid: bd4b37ccb0f28da43a272ac1c304c539, type: 3}
   mimicArea: {fileID: 5923816921959642220}
 --- !u!58 &6273881756595153466
 CircleCollider2D:
