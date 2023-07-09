@@ -65,7 +65,7 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Colour: {r: 0.9433962, g: 0.8863573, b: 0.760057, a: 0}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
-    - _Hightlight_Colour: {r: 1, g: 0.13885477, b: 0.042452775, a: 1}
+    - _Hightlight_Colour: {r: 1, g: 0.65217394, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &7126685215551247889
